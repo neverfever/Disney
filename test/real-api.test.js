@@ -2,7 +2,7 @@
 // Leaves the row neutral (checked=false, fav=false, note='') so the family never sees it.
 const { chromium } = require('playwright');
 const path = require('path');
-const FILE = 'file://' + path.resolve(__dirname, '..', 'disney-5-day-plan.html');
+const FILE = 'file://' + (require('fs').existsSync(path.resolve(__dirname, '..', 'index.html')) ? path.resolve(__dirname, '..', 'index.html') : path.resolve(__dirname, '..', 'disney-5-day-plan.html'));
 const KEY = 'sb_publishable_kA3BmnYlgIhwi7jQKhuoow_QFW4eu49';
 const URL = 'https://lvqexlphajdruidoapdu.supabase.co/rest/v1/wdw_marks';
 function assert(c, m) { if (!c) throw new Error('ASSERT: ' + m); console.log('ok  ', m); }

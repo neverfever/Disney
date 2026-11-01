@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const FILE = 'file://' + path.resolve(__dirname, '..', 'disney-5-day-plan.html');
+const FILE = 'file://' + (require('fs').existsSync(path.resolve(__dirname, '..', 'index.html')) ? path.resolve(__dirname, '..', 'index.html') : path.resolve(__dirname, '..', 'disney-5-day-plan.html'));
 const BASE = 'https://lvqexlphajdruidoapdu.supabase.co/rest/v1/wdw_marks';
 const OUT = path.resolve(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
 
