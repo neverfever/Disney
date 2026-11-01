@@ -167,22 +167,28 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
     localStorage.setItem('wdw-plan-checked', JSON.stringify({ peterpan: 1, dwarfs: 1, bogus: 1 }));
     localStorage.setItem('wdw-plan-fav', JSON.stringify({ dwarfs: 1 }));
   });
-  await C.page.click('.whobtn:has-text("爷爷")');
+  assert((await C.page.$$('.whobtn')).length === 2 && !(await C.page.$('#whoInput')), 'C: only 爸爸/妈妈 offered, no free-text name');
+  await C.page.click('.whobtn:has-text("妈妈")');
   await C.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
-  assert(store.get('wdw-2026-11|peterpan|爷爷').checked === true, 'C: legacy tick imported');
-  const d = store.get('wdw-2026-11|dwarfs|爷爷');
+  assert(store.get('wdw-2026-11|peterpan|妈妈').checked === true, 'C: legacy tick imported');
+  const d = store.get('wdw-2026-11|dwarfs|妈妈');
   assert(d.checked === true && d.fav === true, 'C: legacy tick+fav imported');
-  assert(!store.has('wdw-2026-11|bogus|爷爷'), 'C: unknown legacy id ignored');
+  assert(!store.has('wdw-2026-11|bogus|妈妈'), 'C: unknown legacy id ignored');
   assert((await C.page.evaluate(() => localStorage.getItem('wdw-plan-checked'))) === null, 'C: legacy keys removed');
 
-  // ---- custom name + switch identity ----
+  // ---- switch identity ----
   await C.page.click('#switchMe');
-  await C.page.fill('#whoInput', '小姨');
-  await C.page.click('#whoOk');
-  assert((await C.page.textContent('#meName')) === '小姨', 'C: custom name accepted');
+  await C.page.click('.whobtn:has-text("爸爸")');
+  assert((await C.page.textContent('#meName')) === '爸爸', 'C: switched to 爸爸');
   await C.page.click('#tabs button[data-park=mk]');
   assert(!(await C.page.isChecked('input[data-id=peterpan]')), 'C: switching identity shows the new person\'s (empty) marks');
-  assert((await C.page.textContent('#others-peterpan')).includes('爷✓'), 'C: previous identity shows as another person');
+  assert((await C.page.textContent('#others-peterpan')).includes('妈妈✓'), 'C: previous identity shows as another person');
+
+  // ---- a name no longer on the roster is asked again ----
+  const D = await mk('D', () => { localStorage.setItem('wdw-plan-me', JSON.stringify('爷爷')); });
+  assert(await D.page.$('#whoModal:not([hidden])'), 'D: stale identity 爷爷 triggers the picker again');
+  assert((await D.page.textContent('#meName')) === '还没选', 'D: stale identity not shown as current');
+  await D.ctx.close();
 
   // ---- note clipped to 500 chars client-side ----
   await C.page.click('.toggle[aria-controls=more-peterpan]');
@@ -191,7 +197,7 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
   // maxlength prevents >500 via typing; the page itself also slices to 500, so this stays accepted
   await C.page.locator('textarea.mynote[data-id=peterpan]').blur();
   await C.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
-  assert(store.get('wdw-2026-11|peterpan|小姨').note.length === 500, 'C: note clipped to 500 before upload');
+  assert(store.get('wdw-2026-11|peterpan|爸爸').note.length === 500, 'C: note clipped to 500 before upload');
 
   await C.page.screenshot({ path: path.join(OUT, '05-C-mk.png'), fullPage: false });
   // dark mode screenshot

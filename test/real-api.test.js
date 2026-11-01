@@ -2,7 +2,15 @@
 // Leaves the row neutral (checked=false, fav=false, note='') so the family never sees it.
 const { chromium } = require('playwright');
 const path = require('path');
-const FILE = 'file://' + (require('fs').existsSync(path.resolve(__dirname, '..', 'index.html')) ? path.resolve(__dirname, '..', 'index.html') : path.resolve(__dirname, '..', 'disney-5-day-plan.html'));
+const fs = require('fs');
+const SRC = fs.existsSync(path.resolve(__dirname, '..', 'index.html')) ? path.resolve(__dirname, '..', 'index.html') : path.resolve(__dirname, '..', 'disney-5-day-plan.html');
+// The page only offers 爸爸/妈妈; the test runs a copy whose roster also has 测试 so real family rows are never touched.
+const TMP = path.resolve(__dirname, 'out', 'real-api-page.html');
+fs.mkdirSync(path.dirname(TMP), { recursive: true });
+const src = fs.readFileSync(SRC, 'utf8');
+if (!src.includes('var PEOPLE = ["爸爸", "妈妈"];')) throw new Error('PEOPLE roster line not found in page');
+fs.writeFileSync(TMP, src.replace('var PEOPLE = ["爸爸", "妈妈"];', 'var PEOPLE = ["爸爸", "妈妈", "测试"];'));
+const FILE = 'file://' + TMP;
 const KEY = 'sb_publishable_kA3BmnYlgIhwi7jQKhuoow_QFW4eu49';
 const URL = 'https://lvqexlphajdruidoapdu.supabase.co/rest/v1/wdw_marks';
 function assert(c, m) { if (!c) throw new Error('ASSERT: ' + m); console.log('ok  ', m); }
@@ -28,8 +36,7 @@ async function neutralize() {
   };
   const t0 = Date.now();
   const A = await mk('A');
-  await A.page.fill('#whoInput', '测试');
-  await A.page.click('#whoOk');
+  await A.page.click('.whobtn:has-text("测试")');
   await A.page.click('#tabs button[data-park=rd]');
   await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 30000 });
   assert(true, 'A: first sync against the real server from file:// (origin null)');

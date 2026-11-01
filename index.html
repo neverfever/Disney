@@ -177,12 +177,9 @@
   .modal .sheet { background: var(--paper); color: var(--ink); border-radius: 16px; padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 480px; }
   .modal h2 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
   .modal p { font-size: 13px; color: var(--ink-2); margin: 0 0 12px; }
-  .wholist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 12px; }
+  .wholist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 4px; }
   .whobtn { font: inherit; font-size: 16px; font-weight: 600; padding: 12px 0; border-radius: 12px; border: 2px solid transparent; cursor: pointer; }
   .whobtn.on { border-color: var(--accent); }
-  .whorow { display: flex; gap: 8px; }
-  .whorow input { flex: 1; font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); min-width: 0; }
-  .whorow button { font: inherit; font-size: 15px; padding: 10px 16px; border-radius: 10px; border: 0; background: var(--accent); color: #fff; cursor: pointer; }
   .whocancel { margin-top: 10px; font: inherit; font-size: 13px; color: var(--ink-3); background: none; border: 0; cursor: pointer; }
   body.noscroll { overflow: hidden; }
 </style>
@@ -244,7 +241,6 @@
     <h2 id="whoTitle">你是谁？</h2>
     <p>勾选、收藏和备注按人保存，大家打开同一个链接都能看到。换手机时选同一个名字就能接着用。</p>
     <div class="wholist" id="whoList"></div>
-    <div class="whorow"><input id="whoInput" type="text" maxlength="20" placeholder="其他名字" autocomplete="off"><button type="button" id="whoOk">确定</button></div>
     <button type="button" class="whocancel" id="whoCancel" hidden>取消</button>
   </div>
 </div>
@@ -710,7 +706,7 @@ var SYNC = {
   trip: "wdw-2026-11",
   pollMs: 5000
 };
-var PEOPLE = ["爸爸", "妈妈", "爷爷", "奶奶", "外公", "外婆"];
+var PEOPLE = ["爸爸", "妈妈"];
 var DAY_PARK = { "2026-11-01": "rd", "2026-11-02": "hs", "2026-11-03": "ep", "2026-11-04": "mk", "2026-11-05": "ak" };
 
 function starStr(n) {
@@ -812,7 +808,7 @@ document.getElementById("plan").innerHTML = html;
 
   // ---- 状态 ----
   var me = lsGet(LS.me, null);                  // 我是谁（字符串）
-  if (typeof me !== "string" || !me) me = null;
+  if (typeof me !== "string" || PEOPLE.indexOf(me) < 0) me = null;   // 只允许名单里的人
   var marks = lsGet(LS.cache, {});              // {item_id: {person: {checked, fav, note, updated_at}}}
   if (!marks || typeof marks !== "object") marks = {};
   var pending = lsGet(LS.pending, {});          // 未上传的改动 {person|item_id: row}
@@ -839,7 +835,7 @@ document.getElementById("plan").innerHTML = html;
   var dot = document.getElementById("dot"), syncText = document.getElementById("syncText");
   var meName = document.getElementById("meName"), othersLine = document.getElementById("othersLine");
   var modal = document.getElementById("whoModal"), whoList = document.getElementById("whoList");
-  var whoInput = document.getElementById("whoInput"), whoOk = document.getElementById("whoOk"), whoCancel = document.getElementById("whoCancel");
+  var whoCancel = document.getElementById("whoCancel");
   var parkOf = {};
   boxes.forEach(function (b) { parkOf[b.dataset.id] = b.dataset.park; });
 
@@ -1036,7 +1032,6 @@ document.getElementById("plan").innerHTML = html;
     whoList.innerHTML = PEOPLE.map(function (p) {
       return "<button type='button' class='whobtn " + personClass(p) + (p === me ? " on" : "") + "' data-who='" + esc(p) + "'>" + esc(p) + "</button>";
     }).join("");
-    whoInput.value = (me && PEOPLE.indexOf(me) < 0) ? me : "";
     whoCancel.hidden = !me;
     modal.hidden = false;
     document.body.classList.add("noscroll");
@@ -1049,8 +1044,8 @@ document.getElementById("plan").innerHTML = html;
   }
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !modal.hidden && me) closeModal(); });
   function chooseMe(name) {
-    name = String(name || "").trim().slice(0, 20);
-    if (!name) return;
+    name = String(name || "").trim();
+    if (PEOPLE.indexOf(name) < 0) return;
     me = name; lsSet(LS.me, me);
     importLegacy();
     closeModal(); render(); sync();
@@ -1117,8 +1112,6 @@ document.getElementById("plan").innerHTML = html;
     var b = ev.target.closest && ev.target.closest("[data-who]");
     if (b) chooseMe(b.dataset.who);
   });
-  whoOk.addEventListener("click", function () { chooseMe(whoInput.value); });
-  whoInput.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); chooseMe(whoInput.value); } });
   whoCancel.addEventListener("click", closeModal);
   document.getElementById("syncNow").addEventListener("click", function () { setStatus("init"); render(); sync(); });
 
