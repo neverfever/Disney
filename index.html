@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>奥兰多迪士尼 5 天安排</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #faf8f3; --paper: #ffffff; --ink: #1f2140; --ink-2: #5a5c78; --ink-3: #8f90a6;
+    --line: #e3e0d6; --accent: #3f4fb8; --accent-soft: #e9ecfa; --star: #e0a21b;
+    --ok-bg: #e2f3ea; --ok-ink: #1e6b45; --no-bg: #fbe6e6; --no-ink: #a22e2e;
+    --dad-bg: #fff1dc; --dad-ink: #8a4f08; --done: #f2f1ec; --more: #f7f6f1;
+    --p0-bg: #e3e8fb; --p0-ink: #2f3f9e; --p1-bg: #fbe3ec; --p1-ink: #a1305e; --p2-bg: #e0f2e6; --p2-ink: #1f6a3c;
+    --p3-bg: #fdebd8; --p3-ink: #94530a; --p4-bg: #dcf1f2; --p4-ink: #0f6a6e; --p5-bg: #ece3f8; --p5-ink: #5d3a9c;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #15162a; --paper: #1e2038; --ink: #eeeef7; --ink-2: #b8b9cf; --ink-3: #7f8099;
+      --line: #32345a; --accent: #9aa6f0; --accent-soft: #262a52; --star: #f0b84a;
+      --ok-bg: #16362a; --ok-ink: #8fd9b2; --no-bg: #44201f; --no-ink: #f1a2a2;
+      --dad-bg: #3f2c12; --dad-ink: #f2c27a; --done: #1a1b30; --more: #191b31;
+      --p0-bg: #26305e; --p0-ink: #b9c3f5; --p1-bg: #4a2436; --p1-ink: #f3a9c6; --p2-bg: #1b3a28; --p2-ink: #9fd9b4;
+      --p3-bg: #45301a; --p3-ink: #f1c58a; --p4-bg: #173c3e; --p4-ink: #8fd6d9; --p5-bg: #342448; --p5-ink: #cdb4f0;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #15162a; --paper: #1e2038; --ink: #eeeef7; --ink-2: #b8b9cf; --ink-3: #7f8099;
+    --line: #32345a; --accent: #9aa6f0; --accent-soft: #262a52; --star: #f0b84a;
+    --ok-bg: #16362a; --ok-ink: #8fd9b2; --no-bg: #44201f; --no-ink: #f1a2a2;
+    --dad-bg: #3f2c12; --dad-ink: #f2c27a; --done: #1a1b30; --more: #191b31;
+    --p0-bg: #26305e; --p0-ink: #b9c3f5; --p1-bg: #4a2436; --p1-ink: #f3a9c6; --p2-bg: #1b3a28; --p2-ink: #9fd9b4;
+    --p3-bg: #45301a; --p3-ink: #f1c58a; --p4-bg: #173c3e; --p4-ink: #8fd6d9; --p5-bg: #342448; --p5-ink: #cdb4f0;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", -apple-system, system-ui, sans-serif;
+    font-size: 16px; line-height: 1.5;
+  }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 10; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-2); font-size: 14px; margin: 0 0 16px; }
+
+  .days { margin: 0 0 22px; }
+  .days h2 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+  .daylist { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .day { display: grid; grid-template-columns: 56px 1fr; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--paper); text-align: left; width: 100%; font: inherit; color: inherit; border-left: 0; border-right: 0; border-bottom: 0; cursor: pointer; }
+  .day:first-child { border-top: 0; }
+  .day.rest { cursor: default; }
+  .day .d { font-weight: 600; line-height: 1.3; }
+  .day .d small { display: block; font-weight: 400; color: var(--ink-3); font-size: 12px; }
+  .day .park { font-weight: 600; font-size: 16px; }
+  .day .wx { font-size: 13px; color: var(--ink-2); margin: 2px 0; }
+  .day .why { font-size: 13px; color: var(--ink-3); }
+  .day.active { background: var(--accent-soft); }
+  .day.active .park { color: var(--accent); }
+  .rain { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: 1px; }
+  .rain.hi { background: var(--no-bg); color: var(--no-ink); }
+  .rain.mid { background: var(--dad-bg); color: var(--dad-ink); }
+  .rain.lo { background: var(--ok-bg); color: var(--ok-ink); }
+  .days .tip { font-size: 13px; color: var(--ink-3); margin: 8px 0 0; }
+
+  .tabs { display: flex; gap: 6px; margin: 0 0 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .tabs button { flex: none; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink-2); cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .park-title { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+
+  .summary {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: var(--bg); padding: 10px 0 12px; margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .count { font-size: 15px; white-space: nowrap; }
+  .count b { font-size: 22px; font-weight: 600; color: var(--accent); }
+  .summary .btns { display: flex; gap: 6px; }
+  .summary button { font: inherit; font-size: 13px; color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; cursor: pointer; white-space: nowrap; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 13px; color: var(--ink-2); margin: 10px 0 18px; }
+
+  .park { display: none; }
+  .park.show { display: block; }
+  section { margin: 0 0 22px; }
+  .block-head { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+  .block-head .no { width: 28px; height: 28px; border-radius: 50%; flex: none; background: var(--accent); color: #fff; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; }
+  .block-head h2 { font-size: 18px; font-weight: 600; margin: 0; }
+  .block-head .where { font-size: 13px; color: var(--ink-3); margin-left: auto; text-align: right; }
+  .note { font-size: 14px; color: var(--ink-2); margin: 0 0 10px 38px; }
+
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .row { border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .main { display: grid; grid-template-columns: 40px 36px 1fr; }
+  .fav { display: flex; align-items: flex-start; justify-content: center; padding: 11px 0 0; }
+  .fav button { font: inherit; font-size: 22px; line-height: 1; background: none; border: 0; padding: 2px 4px; cursor: pointer; color: var(--line); }
+  .fav button[aria-pressed="true"] { color: var(--star); }
+  .fav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .row.faved { box-shadow: inset 4px 0 0 var(--star); }
+  .filter button[aria-pressed="true"] { background: var(--star); border-color: var(--star); color: #fff; }
+  .tick { display: flex; align-items: flex-start; justify-content: center; padding: 15px 0 0 2px; cursor: pointer; }
+  .tick input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+  .body { padding: 12px 14px 10px 0; }
+  .name { font-weight: 600; font-size: 16px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .name .en { font-weight: 400; color: var(--ink-2); font-size: 14px; }
+  .stars { color: var(--star); letter-spacing: 1px; font-size: 14px; margin: 2px 0 4px; }
+  .stars .off { color: var(--line); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 6px; }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; line-height: 1.5; }
+  .ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .no { background: var(--no-bg); color: var(--no-ink); }
+  .dad { background: var(--dad-bg); color: var(--dad-ink); }
+  .h { background: var(--accent-soft); color: var(--accent); }
+  .v-in { background: var(--accent-soft); color: var(--accent); }
+  .v-out { background: var(--done); color: var(--ink-2); border: 1px solid var(--line); }
+  .q-dry { background: var(--ok-bg); color: var(--ok-ink); }
+  .q-cov { background: var(--dad-bg); color: var(--dad-ink); }
+  .q-wet { background: var(--no-bg); color: var(--no-ink); }
+  .q-none { background: var(--done); color: var(--ink-3); }
+  .desc { font-size: 14px; color: var(--ink-2); margin: 0 0 6px; }
+  .meta { display: flex; gap: 14px; font-size: 13px; color: var(--ink-3); margin: 0 0 4px; flex-wrap: wrap; }
+  .toggle { font: inherit; font-size: 13px; color: var(--accent); background: none; border: 0; padding: 4px 0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+  .toggle::after { content: "▾"; transition: transform .15s; }
+  .toggle[aria-expanded="true"]::after { transform: rotate(180deg); }
+  .more { display: none; background: var(--more); border-top: 1px dashed var(--line); padding: 12px 14px 14px 40px; font-size: 14px; }
+  .more.open { display: block; }
+  .more dl { margin: 0; display: grid; grid-template-columns: 5.5em 1fr; gap: 6px 10px; }
+  .more dt { color: var(--ink-3); font-size: 13px; padding-top: 1px; }
+  .more dd { margin: 0; color: var(--ink); }
+  .more dd.warn { color: var(--no-ink); }
+  .walk { font-size: 13px; color: var(--ink-3); padding: 6px 14px 6px 40px; background: var(--done); border-top: 1px solid var(--line); }
+  .row.done .body { opacity: .5; }
+  .row.hidden { display: none; }
+  .row.done .name { text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  @media (prefers-reduced-motion: reduce) { .toggle::after { transition: none; } }
+
+  .skip { font-size: 14px; color: var(--ink-2); margin-top: 24px; padding: 12px 14px; border-radius: 12px; background: var(--accent-soft); }
+  .skip strong { color: var(--ink); font-weight: 600; }
+  .foot { font-size: 12px; color: var(--ink-3); margin-top: 20px; }
+
+  .syncbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--ink-2); margin: 0 0 8px; padding: 10px 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+  .syncbar .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-3); flex: none; }
+  .syncbar .dot.ok { background: var(--ok-ink); }
+  .syncbar .dot.offline, .syncbar .dot.rejected { background: var(--no-ink); }
+  .syncbar .dot.init { background: var(--dad-ink); }
+  .syncbar .meline { margin-left: auto; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .syncbar .meline b { color: var(--ink); font-weight: 600; }
+  .syncbar button { font: inherit; font-size: 12px; color: var(--accent); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .syncbar .othersline { flex-basis: 100%; color: var(--ink-3); }
+  .syncbar .othersline:empty { display: none; }
+  .others { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 6px; }
+  .others.empty { display: none; }
+  .pchip { display: inline-block; font-size: 12px; line-height: 1.5; padding: 1px 8px; border-radius: 999px; border: 1px solid transparent; font-weight: 500; }
+  button.pchip { font: inherit; font-size: 12px; cursor: pointer; }
+  .notechip { background: var(--accent-soft); color: var(--accent); }
+  .pc0 { background: var(--p0-bg); color: var(--p0-ink); }
+  .pc1 { background: var(--p1-bg); color: var(--p1-ink); }
+  .pc2 { background: var(--p2-bg); color: var(--p2-ink); }
+  .pc3 { background: var(--p3-bg); color: var(--p3-ink); }
+  .pc4 { background: var(--p4-bg); color: var(--p4-ink); }
+  .pc5 { background: var(--p5-bg); color: var(--p5-ink); }
+  .notes .noteline { display: flex; gap: 6px; align-items: baseline; margin: 0 0 6px; }
+  .notes .noteline .pchip { flex: none; }
+  .mynote { width: 100%; font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); resize: vertical; }
+  .mynote:disabled { opacity: .5; }
+  .modal { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; justify-content: center; padding: 16px; }
+  .modal[hidden] { display: none; }
+  .modal .sheet { background: var(--paper); color: var(--ink); border-radius: 16px; padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 480px; }
+  .modal h2 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  .modal p { font-size: 13px; color: var(--ink-2); margin: 0 0 12px; }
+  .wholist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 12px; }
+  .whobtn { font: inherit; font-size: 16px; font-weight: 600; padding: 12px 0; border-radius: 12px; border: 2px solid transparent; cursor: pointer; }
+  .whobtn.on { border-color: var(--accent); }
+  .whorow { display: flex; gap: 8px; }
+  .whorow input { flex: 1; font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); min-width: 0; }
+  .whorow button { font: inherit; font-size: 15px; padding: 10px 16px; border-radius: 10px; border: 0; background: var(--accent); color: #fff; cursor: pointer; }
+  .whocancel { margin-top: 10px; font: inherit; font-size: 13px; color: var(--ink-3); background: none; border: 0; cursor: pointer; }
+  body.noscroll { overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>奥兰多迪士尼 5 天安排</h1>
+  <p class="sub">2大2小（3岁 90cm、5岁 115cm）+ 孕妈 · 4 张门票，按天气分配园区。点某一天或下面的标签切换园区路线，勾选要去的项目、点 ☆ 收藏、在“详情”里写备注。全家打开同一个链接，先选自己是谁，各人的标注会实时互相看到。</p>
+
+  <div class="days">
+    <h2>按天气分配的园区</h2>
+    <div class="daylist" id="daylist">
+      <button type="button" class="day" data-park="rd"><div class="d">周日<small>11/1</small></div><div>
+        <div class="park">休息日 · 奥特莱斯 + Disney Springs</div>
+        <div class="wx">阵雨+雷雨 27°/21°<span class="rain hi">70%+ 有积水</span></div>
+        <div class="why">雨最大的一天，也是万圣节派对最后一场，MK 下午 6 点清场。上午 Disney Springs，13:30 太阳马戏团，下午奥特莱斯。</div></div></button>
+      <button type="button" class="day" data-park="hs"><div class="d">周一<small>11/2</small></div><div>
+        <div class="park">Hollywood Studios</div>
+        <div class="wx">上午阵雨，下午转好 27°/21°<span class="rain mid">60%</span></div>
+        <div class="why">室内项目最多。可以晚起，中午雨停再进园。</div></div></button>
+      <button type="button" class="day" data-park="ep"><div class="d">周二<small>11/3</small></div><div>
+        <div class="park">Epcot</div>
+        <div class="wx">多云转晴，零星阵雨 28°/22°<span class="rain mid">30–50%</span></div>
+        <div class="why">上午玩室内项目，下午放晴逛 World Showcase。</div></div></button>
+      <button type="button" class="day" data-park="mk"><div class="d">周三<small>11/4</small></div><div>
+        <div class="park">Magic Kingdom</div>
+        <div class="wx">晴到多云 28°/22°<span class="rain lo">25% 本周最好</span></div>
+        <div class="why">户外项目最多、最累的园区放在最好的一天。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。</div></div></button>
+      <button type="button" class="day" data-park="ak"><div class="d">周四<small>11/5</small></div><div>
+        <div class="park">Animal Kingdom</div>
+        <div class="wx">晴，午后局部雷雨 29°/20°<span class="rain mid">50% 午后</span></div>
+        <div class="why">动物早上最活跃，这个园关得早，下午 2–3 点雷雨前基本玩完。</div></div></button>
+    </div>
+    <p class="tip">雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。周二晚再看一次预报，周四更好就把 MK 和 AK 对调。游泳放在周二或周四傍晚，天气好、回酒店早。</p>
+  </div>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="parkhead"></div>
+
+  <div class="syncbar" id="syncbar">
+    <span class="dot init" id="dot"></span><span id="syncText">正在连接共享标注…</span>
+    <button type="button" id="syncNow">刷新</button>
+    <span class="meline">你是 <b id="meName">还没选</b> <button type="button" id="switchMe">切换</button></span>
+    <span class="othersline" id="othersLine"></span>
+  </div>
+
+  <div class="summary">
+    <div class="count">已选 <b id="n">0</b> / <span id="total">0</span> <span style="color:var(--star);margin-left:6px">★ <b id="nf" style="color:var(--star)">0</b></span></div>
+    <div class="btns filter">
+      <button type="button" id="favOnly" aria-pressed="false">只看 ★</button>
+      <button type="button" id="expandAll">全部展开</button>
+      <button type="button" id="reset">清空本园勾选</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="tag ok">孕妇可</span></span>
+    <span><span class="tag no">孕妇不可</span></span>
+    <span><span class="tag dad">爸爸带</span></span>
+    <span><span class="tag h">身高要求</span></span>
+    <span style="color:var(--star)">★ 越多越适合 3–5 岁</span>
+    <span>点 ☆ 收藏</span>
+    <span><span class="pchip pc1">妈妈✓★</span> 别人的勾选 ✓ / 收藏 ★</span>
+    <span style="flex-basis:100%;height:0"></span>
+    <span><span class="tag v-in">项目室内</span></span>
+    <span><span class="tag v-out">项目室外</span></span>
+    <span><span class="tag q-dry">排队室内</span> 不淋雨</span>
+    <span><span class="tag q-cov">排队有顶</span> 基本不淋</span>
+    <span><span class="tag q-wet">排队露天</span> 会淋雨</span>
+  </div>
+
+  <div id="plan"></div>
+
+  <p class="foot">排队时间为常规估计，当天以 My Disney Experience App 为准。所有项目开放情况以 App 当天显示为准。</p>
+</div>
+
+<div class="modal" id="whoModal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="whoTitle">
+    <h2 id="whoTitle">你是谁？</h2>
+    <p>勾选、收藏和备注按人保存，大家打开同一个链接都能看到。换手机时选同一个名字就能接着用。</p>
+    <div class="wholist" id="whoList"></div>
+    <div class="whorow"><input id="whoInput" type="text" maxlength="20" placeholder="其他名字" autocomplete="off"><button type="button" id="whoOk">确定</button></div>
+    <button type="button" class="whocancel" id="whoCancel" hidden>取消</button>
+  </div>
+</div>
+
+<script>
+var PARKS = [
+{ id: "rd", name: "休息日", day: "周日 11/1", intro: "全天阵雨+雷雨，安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 5–10 分钟，奥特莱斯回酒店叫车 15 分钟（约 15 美元）。",
+  skip: "游泳别排这天：佛州有闪电时泳池必须关闭，雷雨天开开关关。挪到周二 Epcot 回来后或周四 Animal Kingdom 回来后。Aerophile 热气球雨天和风大不飞。万圣节派对当晚，Magic Kingdom 6 点清场，不进园。",
+  blocks: [
+  { no: 1, title: "上午", where: "Disney Springs · 酒店巴士 25 分钟", note: "商店 10:00 开门，9:20 到酒店巴士站。先逛 Marketplace（LEGO 那头），再往 West Side 剧场方向走。", items: [
+    { id: "rd-lego", venue: "室内", queue: "有顶", zh: "乐高店", en: "The LEGO Store", stars: 5, tags: [["ok","全家"]],
+      desc: "10:00 开门就进，门外巨型乐高雕塑，店里免费拼搭桌。", ride: "30 分钟", wait: "开门时不用排",
+      about: "店外有真人大小的乐高雕塑和湖里的乐高海蛇，店里有拼搭桌、拼小人偶的台子。",
+      tips: "上午人少，下午周日会限流。拼自己的小人偶 12 美元左右。", walk: "隔壁 ↓" },
+    { id: "rd-wod", venue: "室内", queue: "无排队", zh: "World of Disney", en: "World of Disney", stars: 3, tags: [["ok","全家"]],
+      desc: "全迪士尼最大的周边店。下午还要去 outlet，这里先只看不买。", ride: "20 分钟", wait: "—",
+      about: "两层楼的周边旗舰店，什么都有，价格是园区原价。",
+      tips: "看到喜欢的拍下来，下午 outlet 的 Character Warehouse 很可能有同款半价。" },
+    { id: "rd-goofy", venue: "室内", queue: "室内", zh: "高飞糖果店", en: "Goofy’s Candy Co.", stars: 4, tags: [["ok","全家"]],
+      desc: "自选糖果苹果、棉花糖，现场裹巧克力。", ride: "15 分钟", wait: "5–10 分钟",
+      about: "挑一个苹果或棉花糖，选巧克力和配料，店员现场做。",
+      tips: "糖多，一个两个孩子分。旁边 Ghirardelli 进门免费送一块巧克力。", walk: "雨停的话 ↓" },
+    { id: "rd-carousel", venue: "室外有顶", queue: "露天", zh: "旋转木马 + 小火车", en: "Marketplace Carousel & Train", stars: 3, tags: [["ok","全家"]],
+      desc: "各 3 美元，雨停时玩，排队很短。", ride: "各 5 分钟", wait: "5 分钟",
+      about: "Marketplace 湖边的小旋转木马和绕一圈的小火车，收现金或信用卡。",
+      tips: "木马有顶，火车露天。雨中不开。" },
+    { id: "rd-boat", venue: "室外有顶", queue: "有顶", zh: "免费水上巴士", en: "Water taxi to Saratoga Springs", stars: 4, tags: [["ok","全家"]],
+      desc: "从 Marketplace 码头坐船去 Saratoga Springs 酒店绕一圈，免费，有顶。时间够再坐。", ride: "20 分钟来回", wait: "5–15 分钟",
+      about: "迪士尼的酒店接驳船，有顶棚，沿湖和运河开，孩子当坐船玩，妈妈坐着休息。",
+      tips: "雷雨时停航。到对岸不下船也可以直接坐回来。", walk: "往 West Side 方向走，15 分钟 ↓" },
+    { id: "rd-coke", venue: "室内", queue: "无排队", zh: "可口可乐店", en: "Coca-Cola Store Rooftop", stars: 3, tags: [["ok","全家"]],
+      desc: "路过 Town Center 时上顶楼，10 美元尝遍世界各国可乐。", ride: "20 分钟", wait: "—",
+      about: "三层楼的可乐店，顶楼有空调座位和各国可乐品尝。",
+      tips: "妈妈想坐会儿可以在这里。" },
+    { id: "rd-mm", venue: "室内", queue: "无排队", zh: "M&M’s 巧克力店", en: "M&M’s Store", stars: 4, tags: [["ok","全家"]],
+      desc: "West Side，剧场旁边，两层彩色巧克力墙，免费进。", ride: "20 分钟", wait: "—",
+      about: "可以自己配颜色和印字的 M&M’s，店里有大墙和拍照点。",
+      tips: "吃完午饭看戏前顺路，离剧场 2 分钟。" }
+  ]},
+  { no: 2, title: "午饭（早一点）", where: "West Side 剧场附近 · 11:30", note: "13:30 开演，11:30 吃饭最稳。T-REX 在 Marketplace 那头，来回 30 分钟，时间紧就在 West Side 吃。", items: [
+    { id: "rd-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Lunch near the theater", stars: 4, tags: [["ok","全家"]],
+      desc: "West Side：Splitsville 餐厅（披萨、寿司，可以边吃边看别人打球）、House of Blues、Wetzel’s 快餐。想去 T-REX 就订 11:15。", ride: "1 小时", wait: "11:30 基本不等",
+      about: "Splitsville 二楼餐厅不用打球也能吃，座位多有空调；House of Blues 周日有早午餐。T-REX 和 Rainforest 11:00 开门，但在 Springs 另一头。",
+      tips: "无论哪家，12:45 前结束，走到剧场留 15 分钟。进场前先上厕所，演出 90 分钟没有中场。" }
+  ]},
+  { no: 3, title: "太阳马戏团", where: "West Side · 白色帐篷剧场 · 13:30 开演", note: "现在就去 drawn-to-life.com 确认 11/1 的 13:30 场并买票，3 岁也要票。", items: [
+    { id: "rd-cirque", venue: "室内", queue: "有顶", zh: "Drawn to Life 太阳马戏团", en: "Drawn to Life presented by Cirque du Soleil & Disney", stars: 5, tags: [["ok","全家"]],
+      desc: "13:30 开演，90 分钟，69 美元/人起。13:00 到剧场取票入座。", ride: "90 分钟（无中场）", wait: "提前 30 分钟到",
+      about: "太阳马戏团和迪士尼动画合作的秀，讲一个女孩完成爸爸遗留动画的故事，杂技配上现场画出来的米奇、小飞象等角色。",
+      tips: "全室内，雨天不受影响。有一段灯光全暗和鼓声很大，3 岁怕的话坐靠过道方便抱出去。15:00 散场后从 West Side 出口叫车去奥特莱斯。" }
+  ]},
+  { no: 4, title: "下午", where: "Orlando Vineland Premium Outlets · 叫车 5–10 分钟", note: "15:15 出发，15:30 到，周日 19:00 关门，2 小时够。", items: [
+    { id: "rd-warehouse", venue: "室内", queue: "有顶", zh: "迪士尼折扣店", en: "Disney’s Character Warehouse", stars: 4, tags: [["ok","全家"]],
+      desc: "园区周边 3–5 折，先来这里买上午在 World of Disney 看中的东西。", ride: "40 分钟", wait: "下午可能排 10 分钟进店",
+      about: "迪士尼官方的过季周边仓储店，毛绒、T 恤、马克杯、耳朵，价格是园区的一半以下。",
+      tips: "想要什么现场买，不要等园区里再买。只收信用卡和现金，不能用 MagicBand。", walk: "同一个奥特莱斯里 ↓" },
+    { id: "rd-outlet", venue: "室外有顶", queue: "无排队", zh: "奥特莱斯逛街", en: "Orlando Vineland Premium Outlets", stars: 2, tags: [["ok","全家"]],
+      desc: "Carter’s/OshKosh 童装、Nike、Gap Kids、Coach。孩子看完戏可能困，1.5 小时封顶。", ride: "1.5 小时", wait: "—",
+      about: "160 多家店的露天奥特莱斯，走廊有顶棚，店和店之间要走露天的路。有美食广场，座位紧张。",
+      tips: "推车可以在客服中心租。雨大就在一家店里多待会儿。3 岁困了一个大人带着在美食广场坐。" }
+  ]},
+  { no: 5, title: "晚上", where: "奥特莱斯附近晚饭 → 叫车回 All-Star 15 分钟", items: [
+    { id: "rd-dinner", venue: "室内", queue: "室内", zh: "晚饭", en: "Dinner", stars: 0, tags: [["ok","全家"]],
+      desc: "奥特莱斯旁 Palm Pkwy 有餐厅可以走着去；或者叫车回 Disney Springs 吃 Homecomin’、Boathouse 再坐免费巴士回酒店。", ride: "1 小时", wait: "17:30 早饭点不用等",
+      about: "倒时差第一天孩子大概率 7 点就困，建议在奥特莱斯附近吃完直接叫车回酒店，不要再折返 Springs。",
+      tips: "奥特莱斯美食广场也能解决，但座位少。回酒店的 Uber 15 分钟约 15 美元。" },
+    { id: "rd-monorail", venue: "室外有顶", queue: "有顶", zh: "可选：单轨列车兜一圈", en: "Monorail resort loop", stars: 3, tags: [["ok","全家"]],
+      desc: "孩子有电的话，坐巴士到 Magic Kingdom 大门不进园，免费坐单轨去 Polynesian 看看。", ride: "1 小时", wait: "—",
+      about: "单轨列车不用门票，绕 Contemporary、Polynesian、Grand Floridian 一圈。这天晚上 10 点左右 Polynesian 沙滩能看到派对烟花。",
+      tips: "倒时差第一天不建议，留着别的晚上。" }
+  ]},
+  { no: 6, title: "雨太大出不了门的备选", where: "都要叫车 20–25 分钟", items: [
+    { id: "rd-splitsville", venue: "室内", queue: "室内", zh: "保龄球", en: "Splitsville Luxury Lanes", stars: 4, tags: [["ok","全家"]],
+      desc: "West Side，看戏前后雷雨下大时就进去打一局，有儿童挡板和滑道。", ride: "一局约 30 分钟", wait: "周日中午 10–30 分钟",
+      about: "两层楼的保龄球馆加餐厅，有小孩用的球和滑道，孕妇可以坐旁边看。",
+      tips: "按人按时间收费，一家四口一局 60 美元左右。可以和午饭合并在这里。" },
+    { id: "rd-crayola", venue: "室内", queue: "室内", zh: "Crayola 蜡笔体验馆", en: "Crayola Experience", stars: 5, tags: [["ok","全家"]],
+      desc: "Florida Mall 里，全室内，3–5 岁能玩 3 小时。周日 10:00–18:00，替代奥特莱斯。", ride: "3 小时", wait: "网上买票免排队",
+      about: "做自己的蜡笔、蜡笔画、互动投影、两个室内游乐场，门票含代币可以换定制蜡笔。",
+      tips: "35 美元/人左右，网上买便宜。比 Disney Springs 更适合这个年龄。" },
+    { id: "rd-sealife", venue: "室内", queue: "室内", zh: "SEA LIFE 水族馆", en: "SEA LIFE Orlando Aquarium", stars: 4, tags: [["ok","全家"]],
+      desc: "I-Drive 上，1 小时逛完。周日 10:00–18:00。", ride: "1–1.5 小时", wait: "网上买票",
+      about: "有海底隧道、触摸池、企鹅馆，规模不大。",
+      tips: "和 ICON Park 摩天轮在一起，但摩天轮雷雨不开。" }
+  ]}
+]},
+
+{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "上午有雨，不用抢早入园。10 点左右进园，先玩室内的，雨停后再去 Toy Story Land。园区不大，走路少。",
+  skip: "直接跳过：Tower of Terror（5岁 115cm 够但自由落体太吓人）、Rock ’n’ Roller Coaster 122cm（不够）。Muppet*Vision 已关闭，Monsters Inc 新园区施工中。身高：3岁 90cm 能坐外星人飞碟 81cm；5岁 115cm 能坐 Slinky、Smugglers、Rise、Star Tours。",
+  blocks: [
+  { no: 1, title: "上午（雨中）", where: "Hollywood Blvd 入口 → Animation Courtyard", note: "这两块离入口最近，全是室内。", items: [
+    { id: "hs-railway", venue: "室内", queue: "室内", zh: "米奇米妮疯狂铁路", en: "Mickey & Minnie’s Runaway Railway", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "入口正对的中国剧院里面。无轨道小火车穿过米奇动画片。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "坐进高飞开的火车，穿过一集米奇卡通短片，每个房间场景都不一样，有龙卷风、瀑布、舞厅。全程室内，颜色鲜艳，没有落差。",
+      tips: "全园对小孩最友好的大项目。火车会轻微转向和晃，孕妇没问题。排队线在剧院里有空调，开头有一段 4 分钟的预映短片要站着看。", walk: "右转进 Animation Courtyard，3 分钟 ↓" },
+    { id: "hs-junior", venue: "室内", queue: "有顶", zh: "迪士尼小剧场", en: "Disney Junior Play & Dance!", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "3岁的天堂。米奇、小医生、Vampirina 等出来唱跳，孩子坐地毯上。", ride: "20 分钟", wait: "场次制，提前 15 分钟到",
+      about: "室内舞台秀，DJ 带着孩子们跳舞，会飘下泡泡和彩带，米奇、米妮、Doc McStuffins、Vampirina 轮流出场。",
+      tips: "孩子坐地上、大人坐后面的长凳，孕妇建议早点进去占长凳。结束后出口有米奇合影。场次看 App。" },
+    { id: "hs-mermaid", venue: "室内", queue: "有顶", zh: "小美人鱼音乐剧", en: "The Little Mermaid – A Musical Adventure", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Disney Junior 隔壁，坐着看的舞台剧。", ride: "25 分钟", wait: "场次制，提前 15–20 分钟",
+      about: "2025 年新版，真人演员+木偶，演完小美人鱼的主要歌曲。",
+      tips: "有乌苏拉出场的一段灯光暗、音效大，3岁可能要抱。剧场有空调，是下雨时最好的去处。" }
+  ]},
+  { no: 2, title: "午饭 + 冰雪奇缘", where: "Echo Lake（入口左边）", items: [
+    { id: "hs-frozen", venue: "室内", queue: "有顶", zh: "冰雪奇缘合唱秀", en: "For the First Time in Forever: A Frozen Sing-Along Celebration", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "30 分钟室内大合唱，Anna 和 Elsa 真人出场。", ride: "30 分钟", wait: "场次制，提前 20 分钟",
+      about: "两个阿伦黛尔的“历史学家”讲冰雪奇缘故事，带全场一起唱，最后 Elsa 出来唱 Let It Go，剧场里会下雪。",
+      tips: "剧场很大，几乎不会进不去。中段有一处喷火效果，前排有热感。这是全园最适合午饭后休息的项目。" },
+    { id: "hs-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Lunch", stars: 0, tags: [["ok","全家"]],
+      desc: "Backlot Express（Echo Lake，室内座位多）或 Docking Bay 7（星战园区，饭好吃）。", ride: "45 分钟", wait: "App 提前点单",
+      about: "Backlot Express 就在 Frozen 剧场旁，汉堡沙拉，座位多。Docking Bay 7 在星战园区里，是全园评价最高的快餐。",
+      tips: "11 点前或 1:30 后用 App 点单基本不用等。Woody’s Lunch Box 是 Toy Story Land 的小吃摊，座位全露天，下雨别去。" },
+    { id: "hs-indy", venue: "室外有顶", queue: "部分露天", zh: "夺宝奇兵特技秀", en: "Indiana Jones Epic Stunt Spectacular!", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Frozen 剧场隔壁，露天有顶的大看台。爆炸声大，看孩子。", ride: "30 分钟", wait: "场次制，提前 10 分钟",
+      about: "真人演员重现夺宝奇兵的滚石、打斗、飞机爆炸场面，中间会从观众里挑群演。",
+      tips: "有几处真的爆炸和火，声音很大，3岁容易吓哭，坐后排。时间不够就跳过，优先 Frozen。" }
+  ]},
+  { no: 3, title: "下午（雨停后）", where: "Toy Story Land · 园区最里面左侧", items: [
+    { id: "hs-tsm", venue: "室内", queue: "室内", zh: "玩具总动员疯狂游戏", en: "Toy Story Mania!", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "3D 射击打靶，全家一起，无身高。", ride: "7 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "坐车经过 5 个 3D 射击游戏屏幕，用拉绳炮打盘子、气球、靶子，和巴斯光年类似但更好玩。",
+      tips: "一车坐 2 人，车会旋转但不颠簸。3岁拉不动绳子可以帮他拉。排队线全室内有空调。", walk: "出来左手边 ↓" },
+    { id: "hs-slinky", venue: "室外", queue: "露天", zh: "弹簧狗过山车", en: "Slinky Dog Dash", stars: 5, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","97cm"]],
+      desc: "全园最适合孩子的过山车，有两段发射。5岁 115cm 够，3岁不够。", ride: "2 分钟", wait: "60–90 分钟；Lightning Lane Multi Pass 最热门的一个",
+      about: "弹簧狗造型的家庭过山车，有两次加速发射和一些小坡，中途经过会唱歌的翠丝。",
+      tips: "比小矮人矿车稍刺激一点。用 Rider Switch，爸爸带5岁，妈妈带3岁去对面的外星人飞碟排队。排队线全露天，雨刚停时地面滑。", walk: "对面 ↓" },
+    { id: "hs-saucers", venue: "室外有顶", queue: "有顶", zh: "外星人飞碟", en: "Alien Swirling Saucers", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带两个"],["h","81cm 两个都够"]],
+      desc: "旋转茶杯的变种，3岁 90cm 也能坐。", ride: "2 分钟", wait: "20–40 分钟",
+      about: "飞碟拖着小车甩来甩去，像温和版的旋转茶杯。",
+      tips: "一车坐 2 人，爸爸带3岁，5岁可以和爸爸挤一车（车能坐 2 大 1 小）或者排两次。容易晕的孩子别坐。" },
+    { id: "hs-playground", venue: "室外", queue: "无排队", zh: "Toy Story Land 逛逛", en: "Toy Story Land walk-through", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "整个园区是“放大的后院”，巨型积木、蜡笔，适合拍照。", ride: "15 分钟", wait: "—",
+      about: "园区本身按安迪后院的比例做的，到处是巨型玩具道具。",
+      tips: "翠丝、巴斯、胡迪在园区里有固定合影点，排队一般 20–30 分钟。" }
+  ]},
+  { no: 4, title: "傍晚", where: "Star Wars: Galaxy’s Edge（Toy Story Land 隔壁）→ Sunset Blvd", items: [
+    { id: "hs-galaxy", venue: "室外", queue: "无排队", zh: "星战园区逛逛", en: "Galaxy’s Edge walk-through", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "千年隼实物、机器人、傍晚亮灯最好看。", ride: "30 分钟", wait: "—",
+      about: "整个园区按星战的 Batuu 星球造的，有真实尺寸的千年隼可以合影，街上有机器人和风暴兵巡逻。",
+      tips: "风暴兵会跟孩子互动，但也有的孩子会怕。蓝牛奶/绿牛奶在 Milk Stand，孩子一般喜欢蓝的。" },
+    { id: "hs-smugglers", venue: "室内", queue: "部分露天", zh: "千年隼飞船", en: "Millennium Falcon: Smugglers Run", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","97cm"]],
+      desc: "6 人一组开飞船的模拟器，5岁能当机枪手。", ride: "5 分钟", wait: "30–60 分钟",
+      about: "6 个人坐进驾驶舱，分别当飞行员、炮手、工程师，按按钮完成任务。",
+      tips: "模拟器晃动较大，孕妇不可。5岁当“工程师”只要按亮灯的按钮，不难。不是星战迷可以跳过。" },
+    { id: "hs-rise", venue: "室内", queue: "部分露天", zh: "抵抗军崛起", en: "Star Wars: Rise of the Resistance", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","102cm"]],
+      desc: "5岁 115cm 够。全园最大的项目，但对5岁偏吓人，不是必须。", ride: "18 分钟（含预演）", wait: "60–120 分钟；Single Pass 单买",
+      about: "先被帝国军抓上歼星舰，再坐无轨车逃出来，有大量风暴兵、凯洛伦和一个短暂的下落。",
+      tips: "身高够了也要看胆量，黑暗、激光、下落，很多5岁哭。爸爸想玩可以自己用 Single Rider 或者 Single Pass 快速刷一次。" },
+    { id: "hs-startours", venue: "室内", queue: "室内", zh: "星际旅行（可选）", en: "Star Tours – The Adventures Continue", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","102cm"]],
+      desc: "Echo Lake，3D 模拟飞行，5岁够高，排队短，顺路可以坐。", ride: "5 分钟", wait: "15–30 分钟",
+      about: "坐进模拟舱跟着 C-3PO 飞过星战的各个星球，每次随机不同场景，有 3D 眼镜。",
+      tips: "座椅晃动比飞船大，容易晕的孩子别坐。在 Frozen 剧场旁边，上午看完 Frozen 顺路。" },
+    { id: "hs-batb", venue: "室外有顶", queue: "露天", zh: "美女与野兽舞台剧", en: "Beauty and the Beast – Live on Stage", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Sunset Blvd 的露天剧场，坐着看 25 分钟。", ride: "25 分钟", wait: "场次制，提前 15 分钟",
+      about: "百老汇风格的舞台剧，演完美女与野兽的主要歌曲，服装华丽。",
+      tips: "剧场有顶但不封闭，雨大会取消。最后一场通常 5 点左右，看 App。" },
+    { id: "hs-fantasmic", venue: "室外", queue: "露天", zh: "Fantasmic! 夜间秀", en: "Fantasmic!", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "水幕+烟花+真人的夜间秀，但有反派段落，3岁慎重。", ride: "30 分钟", wait: "提前 45–60 分钟占位",
+      about: "米奇对抗各路反派的水上大秀，有水幕投影、火焰、真人船队，结尾全角色出场。",
+      tips: "开场时间一般 8–9 点，对3岁偏晚；中段反派和火焰可能吓哭。露天看台，雨中照常演。如果 Toy Story Land 玩累了，这个可以放弃。" }
+  ]}
+]},
+
+{ id: "ep", name: "Epcot", day: "周二 11/3", intro: "Epcot 最大，一圈 3 公里以上，推车一定要带。早入园直奔 Frozen，下午放晴再绕 World Showcase。11 月可能还在 Food & Wine 美食节，各国摊位有小份菜。",
+  skip: "直接跳过：Mission: SPACE（5岁够但是旋转模拟器容易晕）、Guardians of the Galaxy 107cm（5岁够但倒退发射太刺激）。爸爸想玩 Guardians 可以在午睡时间买 Single Pass。身高：3岁 90cm 在 Epcot 没有身高限制的项目都能玩；5岁 115cm 能坐 Soarin’ 和 Test Track。",
+  blocks: [
+  { no: 1, title: "早入园", where: "World Showcase · Norway 和 Mexico（湖的左侧）", note: "早入园开放 Frozen 和 Remy，直奔 Frozen。", items: [
+    { id: "ep-frozen", venue: "室内", queue: "室内", zh: "冰雪奇缘漂流", en: "Frozen Ever After", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Norway 馆里面。坐船进阿伦黛尔，Elsa 冰宫唱 Let It Go。", ride: "5 分钟", wait: "60–90 分钟；早入园 15–25 分钟",
+      about: "坐维京船穿过阿伦黛尔，所有角色都是动画机器人，Elsa 在冰宫唱歌，有一段倒退和一个很小的落差。",
+      tips: "全园对孩子最重要的项目，不在早入园去就要 Lightning Lane。落差只有 1 米，会溅一点水。出来旁边是 Anna 和 Elsa 合影点。", walk: "右手边隔壁 ↓" },
+    { id: "ep-mexico", venue: "室内", queue: "室内", zh: "墨西哥三骑士船", en: "Gran Fiesta Tour Starring The Three Caballeros", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "金字塔里面的慢船，8 分钟，基本不排队。", ride: "8 分钟", wait: "5–15 分钟",
+      about: "坐船看唐老鸭在墨西哥的冒险，灯光昏暗但温暖，船经过金字塔里的夜市场景。",
+      tips: "金字塔里面是室内的“夜晚集市”，有空调和餐厅 San Angel Inn。早入园结束后这里人很少，是妈妈休息的好地方。" }
+  ]},
+  { no: 2, title: "上午", where: "World Nature（从 Mexico 往入口方向走，右侧）", items: [
+    { id: "ep-water", venue: "室外", queue: "无排队", zh: "海洋奇缘水之旅", en: "Journey of Water, Inspired by Moana", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "露天步行的互动水景，孩子可以玩水。", ride: "20 分钟", wait: "无排队",
+      about: "沿着小路走，各种可以互动的水柱、瀑布、喷泉，孩子踩踏板、挥手就有水的反应。",
+      tips: "会湿，给孩子带换衣服或者只玩手。上午去不晒，雨后地面滑。", walk: "旁边是海底总动员馆 ↓" },
+    { id: "ep-nemo", venue: "室内", queue: "室内", zh: "海底总动员", en: "The Seas with Nemo & Friends", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "蚌壳车找 Nemo，下车就是巨型水族馆。", ride: "5 分钟", wait: "10–25 分钟",
+      about: "坐蚌壳车经过动画投影在真实水族箱上的场景，最后进入 500 多万升的大水族馆，有海龟、鲨鱼、海牛。",
+      tips: "下车别急着走，水族馆可以看 30 分钟，全室内空调。海牛池在二楼。" },
+    { id: "ep-crush", venue: "室内", queue: "室内", zh: "和海龟 Crush 聊天", en: "Turtle Talk with Crush", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Nemo 馆里面，海龟真的跟孩子对话，5岁最爱。", ride: "15 分钟", wait: "场次制，10–20 分钟",
+      about: "屏幕上的海龟 Crush 实时和观众聊天、回答孩子的问题，每一场都不一样。",
+      tips: "孩子坐前面地毯上才有机会被点到。英文对话，5岁能听懂一些，3岁看热闹。", walk: "出来左转到 The Land 馆 ↓" },
+    { id: "ep-soarin", venue: "室内", queue: "室内", zh: "翱翔世界", en: "Soarin’ Around the World", stars: 5, tags: [["ok","孕妇可（无官方限制）"],["h","102cm"]],
+      desc: "悬空看巨幕飞越世界，5岁 115cm 够，3岁不够。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "座椅升起悬在巨幕前，“飞过”长城、泰姬陵、瑞士雪山，有风和气味。",
+      tips: "官方没有孕妇限制，动作只是缓慢升降，但有恐高感，妈妈自己判断。妈妈陪3岁去旁边的 Living with the Land，爸爸带5岁。坐中间 B1 排视角最好。" },
+    { id: "ep-land", venue: "室内", queue: "室内", zh: "大地船", en: "Living with the Land", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Soarin 楼下，慢船看温室，妈妈带3岁的备选。", ride: "14 分钟", wait: "10–20 分钟",
+      about: "坐船穿过真实的温室和鱼塘，看巨大的南瓜、柠檬、水培蔬菜，迪士尼餐厅的菜有一部分就从这里来。",
+      tips: "全程室内，很安静，适合等 Soarin 的时候坐。船位宽。" }
+  ]},
+  { no: 3, title: "午饭 + 休息", where: "The Land 馆 Sunshine Seasons", items: [
+    { id: "ep-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Sunshine Seasons", stars: 0, tags: [["ok","全家"]],
+      desc: "The Land 馆一楼，全园选择最多的快餐，室内座位多。", ride: "45 分钟", wait: "11:30 前到不用等",
+      about: "美食广场式，有烤肉、亚洲面、沙拉、烘焙，适合全家各点各的。",
+      tips: "吃完直接在馆里休息，或者去 Spaceship Earth 下面的 Creations Shop 有空调座位。要回酒店午睡的话从正门出，Epcot 回酒店路程较远。" },
+    { id: "ep-figment", venue: "室内", queue: "室内", zh: "想象力之旅", en: "Journey Into Imagination with Figment", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "The Land 隔壁，紫色小龙 Figment，8 分钟慢车。", ride: "8 分钟", wait: "5–15 分钟",
+      about: "坐慢车跟着紫色小龙 Figment 参观“想象力研究所”，有气味和错视房间。",
+      tips: "出口有互动游戏区可以玩 15 分钟。项目有点老，排队短，饭后消食正好。" }
+  ]},
+  { no: 4, title: "下午（放晴后）", where: "World Showcase · 从 Canada 顺时针走", note: "各国馆都有 Kidcot 盖章台，5岁拿一张卡每馆盖一个章，能走完一圈。", items: [
+    { id: "ep-remy", venue: "室内", queue: "部分露天", zh: "料理鼠王", en: "Remy’s Ratatouille Adventure", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "France 馆最里面，变成老鼠大小在厨房里跑。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "坐无轨老鼠车，巨幕+实景让你变成老鼠大小，在巴黎餐厅的厨房和餐桌下逃跑，有气味和水雾。",
+      tips: "车会快速转向、有一处“掉落”感觉是视觉效果，车本身没有落差。有 3D 眼镜，3岁不戴也行。France 馆的冰淇淋店 L’Artisan des Glaces 在旁边。", walk: "France → Morocco → Japan，各 3–5 分钟 ↓" },
+    { id: "ep-uk", venue: "室外", queue: "露天", zh: "英国馆见维尼", en: "United Kingdom – Winnie the Pooh meet", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "Canada 和 France 之间，维尼在花园里见面，排队短。", ride: "5 分钟", wait: "10–20 分钟",
+      about: "维尼（有时跳跳虎或爱丽丝）在英国馆后面的花园里，是全园最轻松的角色见面。",
+      tips: "时间看 App，一般到下午 5 点。英国馆后花园有草地可以让孩子跑。" },
+    { id: "ep-japan", venue: "室内", queue: "无排队", zh: "日本馆", en: "Japan pavilion", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "三井商店的扭蛋和零食，太鼓表演。", ride: "20 分钟", wait: "—",
+      about: "大型三井百货有皮卡丘、三丽鸥周边和日本零食，门口有太鼓表演场次。",
+      tips: "太鼓很响，远一点看。Kawaii 零食可以买回去当晚上的奖励。", walk: "Japan → Italy → Germany → China，各 5 分钟 ↓" },
+    { id: "ep-germany", venue: "室外", queue: "无排队", zh: "德国馆小火车", en: "Germany – model railroad", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "德国馆外面的户外模型铁路，3岁能看 15 分钟。", ride: "15 分钟", wait: "—",
+      about: "一个小村庄的模型火车场景，几列火车来回跑，还有焦糖店 Karamell-Küche。",
+      tips: "免费，没有排队，是 World Showcase 里对 3 岁最友好的点。焦糖爆米花值得买。" },
+    { id: "ep-china", venue: "室内", queue: "无排队", zh: "中国馆", en: "China pavilion", stars: 2, tags: [["ok","孕妇可"]],
+      desc: "环幕电影和花木兰见面，可以跳过。", ride: "15 分钟", wait: "—",
+      about: "有一部 360 度环幕中国风光片和杂技表演场次。",
+      tips: "走到这里离 Norway 不远了，如果 Frozen 早上没玩到，这时候可以用 Lightning Lane 补。" }
+  ]},
+  { no: 5, title: "傍晚", where: "World Discovery → 入口处 Spaceship Earth → 湖边 Luminous", items: [
+    { id: "ep-testtrack", venue: "室内+室外", queue: "室内", zh: "测试赛道（可选）", en: "Test Track", stars: 4, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","102cm"]],
+      desc: "5岁 115cm 够。自己设计车再上赛道，最后户外一段开到 100 公里/小时，5岁通常很爱。", ride: "5 分钟", wait: "45–75 分钟；Single Rider 通道快",
+      about: "先在屏幕上设计一辆车，然后坐 6 人车做各种测试，最后冲出建筑在户外赛道高速跑一圈。",
+      tips: "没有落差，只有速度和急转，比过山车好接受。爸爸带5岁用 Single Rider 线 15 分钟能上但会分开坐，5岁单独坐需要 102cm 够。在 Spaceship Earth 左后方。" },
+    { id: "ep-sse", venue: "室内", queue: "有顶", zh: "宇宙飞船地球", en: "Spaceship Earth", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "大球里面的慢车，讲人类通讯史，15 分钟，妈妈休息。", ride: "15 分钟", wait: "10–25 分钟；傍晚最短",
+      about: "坐慢车从球底盘旋上到顶，看洞穴壁画到登月的场景，下来时车会倒着下坡，屏幕上有互动。",
+      tips: "倒退下坡很缓，孕妇没问题，但怕黑的3岁要抱。傍晚排队最短，球亮灯后拍照好看。" },
+    { id: "ep-luminous", venue: "室外", queue: "露天", zh: "Luminous 湖上烟花", en: "Luminous: The Symphony of Us", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "9 点开始，对孩子偏晚，看体力。", ride: "17 分钟", wait: "提前 30 分钟占位",
+      about: "World Showcase 湖面上的喷泉、灯光、烟花秀。",
+      tips: "湖边任何位置都能看，Mexico 和 Canada 之间的桥上人少。如果决定看，傍晚就在 World Showcase 吃晚饭不要往入口走。" }
+  ]}
+]},
+
+{ id: "mk", name: "Magic Kingdom", day: "周三 11/4", intro: "早入园 30 分钟，逆时针走一圈，中午回城堡休息。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。",
+  skip: "直接跳过：Tiana’s Bayou（11/2–12/18 关闭）、TRON 122cm（5岁 115 不够）、旋转茶杯和 Astro Orbiter（孕妇不宜、容易晕）。Carousel of Progress 和河区（Tom Sawyer Island、蒸汽船）施工中关闭。身高：3岁 90cm 只能坐 Barnstormer 89cm 和赛车同乘；5岁 115cm 能坐除 TRON 外的所有项目。",
+  blocks: [
+  { no: 1, title: "早入园", where: "开园前30分钟 · Fantasyland 城堡正后方", note: "只开 Fantasyland 和 Tomorrowland，直奔城堡后面。", items: [
+    { id: "peterpan", venue: "室内", queue: "室内", zh: "彼得潘", en: "Peter Pan’s Flight", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "飞行小船。全园排队最长，第一站。", ride: "3 分钟", wait: "常规 45–90 分钟；早入园 10–20 分钟",
+      about: "坐进海盗船从伦敦夜空飞向梦幻岛，俯瞰下面缩小的城市和海盗船，是全园最经典的慢速黑暗乘骑。",
+      tips: "船是悬挂式的，上下车时车不停，抱着3岁的上车要快一点；全程黑暗但不吓人。早入园不去这个，白天只能靠 Lightning Lane。", walk: "对面就是 ↓" },
+    { id: "smallworld", venue: "室内", queue: "有顶", zh: "小小世界", en: "it’s a small world", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "10分钟慢船，妈妈坐着休息。", ride: "11 分钟", wait: "15–30 分钟",
+      about: "坐船穿过各大洲的玩偶房间，几百个会唱歌的小人偶，全程同一首歌循环。",
+      tips: "船位宽，推车寄存在门口；对3岁来说是最安全的项目，也是大人歇脚的好机会。", walk: "往右走 2 分钟 ↓" },
+    { id: "pooh", venue: "室内", queue: "部分露天", zh: "小熊维尼", en: "The Many Adventures of Winnie the Pooh", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "跳跳虎蹦跳，排队区有互动玩具。", ride: "4 分钟", wait: "30–60 分钟",
+      about: "坐在蜂蜜罐车里跟着维尼穿过百亩森林，跟跳跳虎一起上下蹦，还有一段梦境漂浮场景。",
+      tips: "排队区有互动墙和蜂蜜涂鸦板，孩子不会无聊。有轻微颠簸，孕妇坐没问题。", walk: "到这里分头走 ↓" },
+    { id: "dwarfs", venue: "室外", queue: "部分露天", zh: "小矮人矿车", en: "Seven Dwarfs Mine Train", stars: 5, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","97cm"]],
+      desc: "温和过山车，Pooh 隔壁。5岁 115cm 够，3岁 90cm 不够。用 Rider Switch 或买 Single Pass。", ride: "3 分钟", wait: "60–120 分钟；Single Pass 约 15–25 美元/人",
+      about: "全园最温和的家庭过山车，矿车会左右摇摆，中途穿过小矮人唱歌采矿的洞窟。",
+      tips: "孕妇不能坐。爸爸带5岁，妈妈在旁边陪3岁去 Mermaid。早入园直接去排，30 分钟内能上。" },
+    { id: "mermaid", venue: "室内", queue: "室内", zh: "小美人鱼", en: "Under the Sea – Journey of the Little Mermaid", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "蚌壳车，矿车后方。妈妈带3岁同时去。", ride: "6 分钟", wait: "15–30 分钟",
+      about: "坐蚌壳车重温小美人鱼的故事，有一段进入海底的下坡感觉，所有歌曲都是电影原声。",
+      tips: "排队线几乎全室内，很少超过 30 分钟，适合妈妈带3岁一边等爸爸。" }
+  ]},
+  { no: 2, title: "上午", where: "Fantasyland 东侧 Storybook Circus", items: [
+    { id: "dumbo", venue: "室外有顶", queue: "室内", zh: "小飞象", en: "Dumbo the Flying Elephant", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "穿过拱门。自控升降，候车区是室内游乐场。", ride: "2 分钟", wait: "20–40 分钟（候车时间在室内游乐场度过）",
+      about: "坐在小飞象里绕圈，自己扳杆控制升降。有两个一模一样的转盘，所以排得快。",
+      tips: "拿呼叫器后孩子在空调游乐场玩，响了再去坐，是全园对小孩最友好的排队。一头象坐 2 人（大人+小孩），要分两头。", walk: "隔壁 ↓" },
+    { id: "barnstormer", venue: "室外", queue: "露天", zh: "迷你过山车", en: "The Barnstormer", stars: 4, tags: [["no","孕妇不可"],["dad","爸爸带两个"],["h","89cm 两个都够"]],
+      desc: "1分钟，3岁 90cm 刚够 89cm，可以第一次试过山车。", ride: "1 分钟", wait: "15–30 分钟",
+      about: "高飞驾驶的小型过山车，只有几个小转弯和一个小落差，全程露天。",
+      tips: "3岁刚过线，工作人员会量得很严，鞋别脱。一车坐 2 人，爸爸带一个坐两次，或者 5岁自己坐一排（需要 107cm 才能单独坐，115 够）。哭了就一分钟结束。", walk: "回头走到城堡正后方 ↓" },
+    { id: "carrousel", venue: "室外有顶", queue: "部分露天", zh: "旋转木马", en: "Prince Charming Regal Carrousel", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "经典填空项目，排队快。", ride: "2 分钟", wait: "10–20 分钟",
+      about: "1917 年的古董木马，90 匹马每匹都不一样，就在城堡正后方。",
+      tips: "孩子骑马时大人要站旁边扶着，孕妇可以坐马车座。拍照背景是城堡背面。" },
+    { id: "philhar", venue: "室内", queue: "室内", zh: "米奇幻想曲 3D", en: "Mickey’s PhilharMagic", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "旋转木马旁。12分钟，吹空调。", ride: "12 分钟", wait: "10–20 分钟",
+      about: "唐老鸭弄丢了米奇的魔法帽，穿过小美人鱼、狮子王、阿拉丁等电影场景的 3D 电影，带气味和水雾效果。",
+      tips: "3岁可能不愿意戴 3D 眼镜，不戴也能看。有几处音效很大，坐靠后一点。坐中间偏后视角最好。" },
+    { id: "princess", venue: "室内", queue: "室内", zh: "见公主", en: "Princess Fairytale Hall", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "就在隔壁，排队可能 30 分钟以上。", ride: "每位公主约 2–3 分钟", wait: "30–60 分钟",
+      about: "两条线各见两位公主（通常一边是灰姑娘+一位，另一边是蒂安娜/长发公主等），可以合影、签名。",
+      tips: "App 上看当天是哪几位，别排到不认识的。想签名带本子和粗笔。两条线分开排，只能选一条。" }
+  ]},
+  { no: 3, title: "午饭 + 休息", where: "城堡前广场", note: "Pinocchio Village Haus（small world 旁）或 Columbia Harbour House（Liberty Square）。Baby Care Center 在 Main Street 尽头城堡左侧。", items: [
+    { id: "parade", venue: "室外", queue: "露天", zh: "花车巡游", en: "Disney Festival of Fantasy Parade", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "下午场，Frontierland 出发到 Main Street。Liberty Square 最不挤，提前 20 分钟占位。", ride: "约 15 分钟经过", wait: "提前 20–30 分钟占位",
+      about: "全园最大的日间巡游，有冰雪奇缘、小美人鱼、彼得潘的花车和喷火的玛琳菲森巨龙。",
+      tips: "时间 App 上查（通常下午 12 点或 3 点）。Liberty Square 的路边和 Frontierland 起点最早看到也最早散。孩子坐路牙、大人站后面。推车停到不挡路的地方。" },
+    { id: "nap", venue: "室内", queue: "无排队", zh: "回酒店午睡", en: "Midday break", stars: 0, tags: [["ok","全家休息"]],
+      desc: "3岁大概率需要。不回酒店就去 Tiki Room / Country Bears 吹空调。", ride: "2–3 小时", wait: "—",
+      about: "Disney 酒店坐单轨/船/巴士来回约 30–45 分钟，可以再回来玩到烟花。",
+      tips: "出园前在 App 上截图当天的烟花和巡游时间。Baby Care Center 有安静的喂奶室、换尿布台和微波炉，孕妇也可以进去坐。" }
+  ]},
+  { no: 4, title: "下午", where: "Liberty Square → Frontierland → Adventureland", items: [
+    { id: "mansion", venue: "室内", queue: "部分露天", zh: "鬼屋", en: "Haunted Mansion", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Liberty Square。5岁多半行，3岁可能哭。", ride: "9 分钟", wait: "30–60 分钟",
+      about: "坐“末日车”穿过 999 个幽灵的宅邸，气氛阴森但幽默，幽灵会跳舞唱歌，没有突然吓人的 jump scare。",
+      tips: "开头的“拉伸房间”是关灯的，很多3岁在这里就哭。可以一个大人在外面等，或者和 Rider Switch 一样分开进。车可以坐 3 人。", walk: "往左进 Frontierland ↓" },
+    { id: "bears", venue: "室内", queue: "室内", zh: "乡村熊", en: "Country Bear Musical Jamboree", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "坐着看的音乐秀，空调。", ride: "15 分钟", wait: "10–20 分钟",
+      about: "一群机械熊用乡村风格翻唱迪士尼歌曲，2024 年翻新后歌曲是孩子熟悉的（狮子王、冰雪奇缘等）。",
+      tips: "全程坐着，开场前在室内排队区就有空调。适合下午最热的时候来。", walk: "对面 ↓" },
+    { id: "thunder", venue: "室外", queue: "部分露天", zh: "巨雷山矿车", en: "Big Thunder Mountain Railroad", stars: 4, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","102cm"]],
+      desc: "5岁 115cm 够了。比小矮人矿车快一点但没有大落差，爸爸带5岁用 Rider Switch。", ride: "4 分钟", wait: "40–70 分钟；Multi Pass 可订",
+      about: "穿过废弃金矿的矿车过山车，急转弯多、落差小，有山洞、瀑布、山羊，是迪士尼最经典的家庭过山车。",
+      tips: "5岁坐过小矮人矿车没哭的话这个也行，比小矮人晃得厉害一点。坐后排最刺激，前排最温和。妈妈带3岁在对面 Country Bears 或 Pecos Bill 餐厅等。", walk: "继续往左进 Adventureland ↓" },
+    { id: "pirates", venue: "室内", queue: "室内", zh: "加勒比海盗", en: "Pirates of the Caribbean", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Adventureland 最里面。一个小落差，略黑，3岁看胆量。", ride: "9 分钟", wait: "30–60 分钟",
+      about: "坐船穿过海盗攻城的场景，有杰克船长、炮火、狗叼钥匙等经典画面。",
+      tips: "开头有一个约 4 米的小落差，会溅点水，前排湿一点。光线暗、炮声响，怕黑的3岁坐中间抱着。船前排看得最清楚。", walk: "出来右手边 ↓" },
+    { id: "jungle", venue: "室外有顶", queue: "有顶", zh: "丛林巡航", en: "Jungle Cruise", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "慢船，船长讲笑话。建议 Lightning Lane 订下午 3–4 点。", ride: "10 分钟", wait: "45–90 分钟",
+      about: "船长带着一船人沿着“热带河流”看机械大象、河马、猴子，全程讲冷笑话，每个船长风格不一样。",
+      tips: "笑话是英文梗，孩子主要看动物。排队线很长而且大部分露天，一定用 Lightning Lane。船边有栏杆，小孩别探头。", walk: "对面 ↓" },
+    { id: "tiki", venue: "室内", queue: "有顶", zh: "鸟鸟秀", en: "Walt Disney’s Enchanted Tiki Room", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "空调休息 10 分钟。", ride: "12 分钟", wait: "5–15 分钟",
+      about: "1963 年的经典，一屋子会唱歌的机械鹦鹉和花朵，中间有一段打雷下雨。",
+      tips: "坐在长凳上，打雷那段会关灯几秒钟，提前跟孩子说一声。门口的 Dole Whip（菠萝冰）值得排。" },
+    { id: "carpets", venue: "室外", queue: "露天", zh: "魔毯", en: "The Magic Carpets of Aladdin", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Tiki Room 门口，同小飞象款。坐过小飞象可跳过。", ride: "2 分钟", wait: "15–30 分钟",
+      about: "和小飞象一样的旋转升降，一张毯子坐 4 人，前排控制升降，后排控制俯仰。",
+      tips: "旁边的骆驼会喷水，排队时注意。全家可以坐一张毯子，是少数四个人能一起坐的项目。" }
+  ]},
+  { no: 5, title: "傍晚", where: "穿过城堡前广场到 Tomorrowland · 约 5 分钟", items: [
+    { id: "buzz", venue: "室内", queue: "室内", zh: "巴斯光年", en: "Buzz Lightyear’s Space Ranger Spin", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "进去右手第一个。旋转射击打分，孩子最爱。建议 Lightning Lane 订 5–6 点。", ride: "5 分钟", wait: "30–60 分钟",
+      about: "坐在可以 360 度旋转的车里，用激光枪打札克大王的标靶，屏幕上实时显示分数。",
+      tips: "一车坐 2 人，各有一把枪和一个转向杆。给3岁的枪让他随便按就行。打“Z”标记的靶分最高。排队线全室内。", walk: "旁边 ↓" },
+    { id: "peoplemover", venue: "室外有顶", queue: "有顶", zh: "轨道观光车", en: "Tomorrowland Transit Authority PeopleMover", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "基本不排队，坐着兜一圈 10 分钟。", ride: "10 分钟", wait: "5–15 分钟",
+      about: "沿着 Tomorrowland 二层轨道慢慢绕一圈，会穿过太空山和巴斯光年的内部。",
+      tips: "上车是一段自动扶梯，推车要折叠。傍晚坐可以看灯亮起来，是全园最舒服的休息项目，可以连坐两圈。", walk: "最里面 ↓" },
+    { id: "speedway", venue: "室外", queue: "部分露天", zh: "赛车道", en: "Tomorrowland Speedway", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带"],["h","81cm 同乘"]],
+      desc: "排队慢，超过 30 分钟就跳过。", ride: "5 分钟", wait: "30–60 分钟",
+      about: "开真的汽油小车沿着固定轨道跑一圈，孩子可以坐大人腿上握方向盘。",
+      tips: "车有汽油味、很吵，孕妇不宜。3岁 90cm 和 5岁都能同乘。一辆车只能坐 1 大 1 小，爸爸要带两趟。单独开需要 137cm。排队大部分露天，太阳大就跳过。" },
+    { id: "space", venue: "室内", queue: "室内", zh: "太空山（可选）", en: "Space Mountain", stars: 3, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","112cm"]],
+      desc: "5岁 115cm 刚够。全黑过山车，看胆量，不是必须。", ride: "3 分钟", wait: "40–70 分钟；傍晚最短",
+      about: "全程在黑暗里的室内过山车，速度其实不快，但看不见轨道所以感觉刺激。",
+      tips: "一人一排单独坐，爸爸不能抱着。5岁怕黑的话跳过，巨雷山已经够了。排队线全室内有空调。" }
+  ]},
+  { no: 6, title: "烟花", where: "城堡前广场 / Main Street", items: [
+    { id: "fireworks", venue: "室外", queue: "露天", zh: "烟花", en: "Happily Ever After", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "提前 30–40 分钟到 Main Street 靠近入口的位置，看完直接出园。娃困了可以放弃。", ride: "18 分钟", wait: "提前 30–40 分钟占位",
+      about: "城堡投影 + 烟花 + 电影音乐，是 Magic Kingdom 的压轴秀。",
+      tips: "城堡正前方人最挤、散场最慢；站 Main Street 靠近火车站那一头，城堡投影照样看得到，结束后几步就到出口。声音很大，怕响的孩子准备降噪耳机。" },
+    { id: "mickey", venue: "室内", queue: "室内", zh: "见米奇", en: "Town Square Theater", stars: 3, tags: [["ok","孕妇可"]],
+      desc: "在 Main Street 入口处，进园或出园时顺路。", ride: "3 分钟", wait: "20–40 分钟",
+      about: "米奇在后台化妆间等你，可以合影、拥抱、签名，是全园最稳定能见到米奇的地方。",
+      tips: "早入园和下午巡游时排队最短。可以用 Lightning Lane Multi Pass 订。" }
+  ]}
+]},
+
+{ id: "ak", name: "Animal Kingdom", day: "周四 11/5", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长，下午 2–3 点雷雨前基本玩完，下午可以回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
+  skip: "直接跳过：Expedition Everest（5岁 115cm 够但有倒退和雪怪，对5岁偏吓人，不建议）；Kali River Rapids（5岁够但会全身湿透，这天下午有雷雨，别坐）。DinoLand 整片关闭施工。身高：3岁 90cm 在 AK 只能玩无身高项目；5岁 115cm 能坐 Flight of Passage。",
+  blocks: [
+  { no: 1, title: "早入园 / 一开园", where: "Africa · 进门后沿左边一直走到底，约 10 分钟", note: "早入园开放 Pandora 和 Safari，但 Safari 早上动物最多，先去。", items: [
+    { id: "ak-safari", venue: "室外", queue: "有顶", zh: "乞力马扎罗狩猎", en: "Kilimanjaro Safaris", stars: 5, tags: [["ok","孕妇可（路面颠簸，自行判断）"],["h","无身高"]],
+      desc: "坐敞篷卡车看真的长颈鹿、大象、狮子，全园第一名。", ride: "20 分钟", wait: "开园时 15–30 分钟，之后 45–75 分钟",
+      about: "开放式卡车在 110 英亩的草原上开 20 分钟，长颈鹿、斑马、大象、犀牛、狮子都是真的，有时就在车边。",
+      tips: "路是故意做得颠簸的，官方有提示孕妇注意，坐中间排最稳。早上凉快动物活跃，下午大多趴着。一排坐 7 人，靠边视野好。", walk: "出口旁边 ↓" },
+    { id: "ak-gorilla", venue: "室外", queue: "无排队", zh: "大猩猩步道", en: "Gorilla Falls Exploration Trail", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "步行看大猩猩、河马、狐獴，20 分钟。", ride: "20–30 分钟", wait: "无排队",
+      about: "一条树荫小路，经过大猩猩家族、水下看河马的玻璃窗、狐獴和各种鸟。",
+      tips: "早上大猩猩在吃东西最活跃。全程推车可进，是 Safari 之后的自然延续。" }
+  ]},
+  { no: 2, title: "上午", where: "Africa 狮子王剧场 → Pandora（往入口方向走，左手边）", items: [
+    { id: "ak-lionking", venue: "室内", queue: "有顶", zh: "狮子王音乐秀", en: "Festival of the Lion King", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "30 分钟室内大秀，全园最好的表演，有空调。", ride: "30 分钟", wait: "场次制，提前 20–30 分钟",
+      about: "四面舞台的歌舞秀，辛巴、彭彭的巨型花车，杂技、火舞、合唱，演狮子王的全部名曲。",
+      tips: "分 4 个区坐，每区会被分配一个动物叫声互动，孩子很喜欢。剧场有空调，是上午最热时的最佳选择。第一场通常 10 点。", walk: "往入口方向走到 Pandora，约 10 分钟 ↓" },
+    { id: "ak-navi", venue: "室内", queue: "部分露天", zh: "纳美河漂流", en: "Na’vi River Journey", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "阿凡达发光森林里的慢船，无身高，全家一起。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "坐船穿过荧光的潘多拉雨林，有发光的植物、动物投影，结尾是一个会唱歌的巨大纳美人萨满机器人。",
+      tips: "全程黑暗但很美不吓人，船很稳。这是 Pandora 唯一全家能坐的项目，一定要 Lightning Lane 或早入园。", walk: "旁边 ↓" },
+    { id: "ak-pandora", venue: "室外", queue: "无排队", zh: "潘多拉逛逛", en: "Pandora – The World of Avatar walk-through", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "悬浮山、会喷水的植物、鼓可以敲。", ride: "20 分钟", wait: "—",
+      about: "整个园区是阿凡达的潘多拉星球，有悬浮山、会动的植物、踩了会响的地面。",
+      tips: "有几处互动植物碰了会喷水或发声，孩子能玩很久。晚上整个园区会发光，但这天下午可能有雷雨，上午看看就行。" },
+    { id: "ak-fop", venue: "室内", queue: "部分露天", zh: "阿凡达飞行", en: "Avatar Flight of Passage", stars: 5, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","112cm"]],
+      desc: "5岁 115cm 刚够。全迪士尼最好的项目之一，爸爸带5岁去，建议买 Single Pass。", ride: "5 分钟", wait: "60–120 分钟；Single Pass 单买（25 美元左右/人）",
+      about: "骑在模拟的斑溪兽上飞越潘多拉的 3D 巨幕，有风、气味和座椅起伏，像骑摩托车一样跨坐。",
+      tips: "跨坐在座椅上，背后有卡扣，115cm 刚过线可能卡扣偏紧，入口先让工作人员量。有俯冲感但没有真的落差，大多数5岁很兴奋。3D 眼镜必须戴。妈妈带3岁在旁边的 Na’vi River 或 Pandora 逛。" }
+  ]},
+  { no: 3, title: "午饭", where: "Pandora · Satu’li Canteen", items: [
+    { id: "ak-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Satu’li Canteen", stars: 0, tags: [["ok","全家"]],
+      desc: "全迪士尼评价最高的快餐，碗饭，室内座位。", ride: "45 分钟", wait: "App 提前点单",
+      about: "自选底料+蛋白质+酱的碗饭，有儿童餐，室内有空调座位。",
+      tips: "11 点前用 App 点单。吃完如果 3 岁已经累了，可以从这里直接出园回酒店，Pandora 离入口只有 5 分钟。" }
+  ]},
+  { no: 4, title: "下午（雷雨前）", where: "Asia · 从 Pandora 穿过 Discovery Island 往右走，约 10 分钟", items: [
+    { id: "ak-birds", venue: "室外有顶", queue: "有顶", zh: "鸟类飞行秀", en: "Feathered Friends in Flight!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "老鹰、鹦鹉从头顶飞过的露天秀，25 分钟。", ride: "25 分钟", wait: "场次制，提前 15 分钟",
+      about: "训练师带着几十种鸟在观众头顶飞来飞去，有金刚鹦鹉、猫头鹰、秃鹫。",
+      tips: "有顶棚的露天剧场，雨中可能取消。坐靠过道，鸟会从头顶擦过去，孩子很兴奋。", walk: "隔壁 ↓" },
+    { id: "ak-jungle", venue: "室外", queue: "无排队", zh: "老虎步道", en: "Maharajah Jungle Trek", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "步行看老虎、科摩多龙、蝙蝠。", ride: "20–30 分钟", wait: "无排队",
+      about: "亚洲古庙风格的小路，有老虎、科摩多巨蜥、巨型果蝠（可以开放接触的蝙蝠房）、鸟园。",
+      tips: "蝙蝠房有绕行通道，怕的话可以不进。老虎下午通常在水边趴着，远一点但能看到。" },
+    { id: "ak-zootopia", venue: "室内", queue: "有顶", zh: "疯狂动物城 3D 秀", en: "Zootopia: Better Zoogether!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "生命之树里面的 3D 电影，有座椅特效，空调。", ride: "15 分钟", wait: "10–25 分钟",
+      about: "2025 年底新开的 3D 秀，朱迪和尼克主持动物城庆典，有水雾、风、座椅震动效果。",
+      tips: "座椅特效比 PhilharMagic 多，3岁怕的话坐最后一排（特效弱）。剧场在生命之树树根下，入口在 Discovery Island。" }
+  ]},
+  { no: 5, title: "收尾 / 备选", where: "Discovery Island 和 Africa 小火车", items: [
+    { id: "ak-explorers", venue: "室外", queue: "无排队", zh: "荒野探险家集章", en: "Wilderness Explorers", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "入口领册子，全园 30 多个站点集章，5岁一整天的任务。", ride: "全天穿插", wait: "无",
+      about: "飞屋环游记主题的集章活动，每个站点工作人员会教一个小知识然后盖章。",
+      tips: "入口桥上领册子，免费。不用全集齐，每到一个园区集 2–3 个就够孩子开心。" },
+    { id: "ak-rafiki", venue: "室外有顶", queue: "有顶", zh: "动物农场小火车", en: "Rafiki’s Planet Watch & Affection Section", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Africa 坐小火车去摸山羊、看兽医，备选。", ride: "小火车 7 分钟 + 农场 30 分钟", wait: "小火车 10–15 分钟",
+      about: "从 Africa 坐小火车到后区，有可以摸的山羊绵羊、兽医手术观察窗和画动物的教室。",
+      tips: "时间够就去，3岁会很喜欢摸动物。有洗手池。下午 2 点以后雷雨来之前要往回坐火车。" },
+    { id: "ak-nemo", venue: "室内", queue: "有顶", zh: "海底总动员舞台剧", en: "Finding Nemo: The Big Blue… and Beyond!", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "DinoLand 剧场的室内木偶音乐剧，确认开放再去。", ride: "25 分钟", wait: "场次制",
+      about: "巨型木偶+真人演唱的海底总动员音乐剧，室内有空调。",
+      tips: "DinoLand 大部分区域施工关闭，这个剧场是否开放当天看 App。雷雨来了的话这里是最近的室内避雨处之一。" }
+  ]}
+]}
+];
+
+// ---- 共享标注配置（Supabase 公开 key，只允许读写本次行程的标注表） ----
+var SYNC = {
+  url: "https://lvqexlphajdruidoapdu.supabase.co",
+  key: "sb_publishable_kA3BmnYlgIhwi7jQKhuoow_QFW4eu49",
+  table: "wdw_marks",
+  trip: "wdw-2026-11",
+  pollMs: 5000
+};
+var PEOPLE = ["爸爸", "妈妈", "爷爷", "奶奶", "外公", "外婆"];
+var DAY_PARK = { "2026-11-01": "rd", "2026-11-02": "hs", "2026-11-03": "ep", "2026-11-04": "mk", "2026-11-05": "ak" };
+
+function starStr(n) {
+  if (!n) return "";
+  var s = "";
+  for (var i = 0; i < 5; i++) s += i < n ? "★" : "<span class='off'>★</span>";
+  return s;
+}
+function qClass(q) {
+  if (q === "室内") return "q-dry";
+  if (q === "有顶") return "q-cov";
+  if (q === "无排队") return "q-none";
+  return "q-wet";
+}
+function qNote(q) {
+  if (q === "室内") return "，下雨完全不影响";
+  if (q === "有顶") return "，有顶棚，侧风大时边上会飘雨";
+  if (q === "部分露天") return "，前段露天后段有顶或室内，雨天穿雨披排前半段";
+  if (q === "露天") return "，全程露天，雨天要穿雨披或等雨停";
+  return "";
+}
+function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function personClass(name) {
+  var i = PEOPLE.indexOf(name);
+  if (i < 0) { i = 0; for (var k = 0; k < name.length; k++) i = (i * 31 + name.charCodeAt(k)) % 6; }
+  return "pc" + (i % 6);
+}
+function shortName(name) { return name.length > 2 ? name.slice(0, 2) : name; }
+function pad2(n) { return (n < 10 ? "0" : "") + n; }
+function todayKey() { var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+
+var html = "", tabs = "";
+PARKS.forEach(function (p) {
+  tabs += "<button type='button' role='tab' data-park='" + p.id + "' aria-selected='false'>" + esc(p.name) + "</button>";
+  html += "<div class='park' id='park-" + p.id + "'>";
+  p.blocks.forEach(function (b) {
+    html += "<section><div class='block-head'><span class='no'>" + b.no + "</span><h2>" + esc(b.title) + "</h2><span class='where'>" + esc(b.where) + "</span></div>";
+    if (b.note) html += "<p class='note'>" + esc(b.note) + "</p>";
+    html += "<div class='card'>";
+    b.items.forEach(function (it) {
+      html += "<div class='row' id='row-" + it.id + "'><div class='main'>" +
+        "<label class='tick'><input type='checkbox' data-id='" + it.id + "' data-park='" + p.id + "' aria-label='要去：" + esc(it.zh) + "'></label>" +
+        "<div class='fav'><button type='button' class='favbtn' data-id='" + it.id + "' aria-pressed='false' aria-label='收藏：" + esc(it.zh) + "'>☆</button></div>" +
+        "<div class='body'><div class='name'>" + esc(it.zh) + " <span class='en'>" + esc(it.en) + "</span></div>" +
+        (it.stars ? "<div class='stars'>" + starStr(it.stars) + "</div>" : "") +
+        "<div class='tags'>" + it.tags.map(function (t) { return "<span class='tag " + t[0] + "'>" + esc(t[1]) + "</span>"; }).join("") +
+          "<span class='tag " + (it.venue.indexOf("室内") === 0 ? "v-in" : "v-out") + "'>项目" + esc(it.venue) + "</span>" +
+          "<span class='tag " + qClass(it.queue) + "'>排队" + esc(it.queue) + "</span></div>" +
+        "<div class='others' id='others-" + it.id + "' data-id='" + it.id + "'></div>" +
+        "<p class='desc'>" + esc(it.desc) + "</p>" +
+        "<div class='meta'><span>游玩 " + esc(it.ride) + "</span><span>排队 " + esc(it.wait.split("；")[0]) + "</span></div>" +
+        "<button type='button' class='toggle' aria-expanded='false' aria-controls='more-" + it.id + "'>详情</button>" +
+        "</div></div>" +
+        "<div class='more' id='more-" + it.id + "'><dl>" +
+        "<dt>备注</dt><dd><div class='notes' id='notes-" + it.id + "'></div>" +
+          "<textarea class='mynote' data-id='" + it.id + "' rows='2' maxlength='500' placeholder='写一句备注，大家都能看到' aria-label='我的备注：" + esc(it.zh) + "'></textarea></dd>" +
+        "<dt>英文名</dt><dd>" + esc(it.en) + "</dd>" +
+        "<dt>内容</dt><dd>" + esc(it.about) + "</dd>" +
+        "<dt>游玩时间</dt><dd>" + esc(it.ride) + "</dd>" +
+        "<dt>排队时间</dt><dd>" + esc(it.wait) + "</dd>" +
+        "<dt>室内/室外</dt><dd>项目" + esc(it.venue) + "；排队区" + esc(it.queue) + qNote(it.queue) + "</dd>" +
+        "<dt>注意事项</dt><dd class='warn'>" + esc(it.tips) + "</dd>" +
+        "</dl></div></div>";
+      if (it.walk) html += "<div class='walk'>" + esc(it.walk) + "</div>";
+    });
+    html += "</div></section>";
+  });
+  html += "<div class='skip'><strong>直接跳过：</strong>" + esc(p.skip.replace(/^直接跳过：/, "")) + "</div></div>";
+});
+document.getElementById("tabs").innerHTML = tabs;
+document.getElementById("plan").innerHTML = html;
+
+(function () {
+  var LS = { me: "wdw-plan-me", cache: "wdw-plan-cache", pending: "wdw-plan-pending", park: "wdw-plan-park2",
+             oldChecked: "wdw-plan-checked", oldFav: "wdw-plan-fav", oldPark: "wdw-plan-park" };
+  function lsGet(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+  // ---- 状态 ----
+  var me = lsGet(LS.me, null);                  // 我是谁（字符串）
+  if (typeof me !== "string" || !me) me = null;
+  var marks = lsGet(LS.cache, {});              // {item_id: {person: {checked, fav, note, updated_at}}}
+  if (!marks || typeof marks !== "object") marks = {};
+  var pending = lsGet(LS.pending, {});          // 未上传的改动 {person|item_id: row}
+  if (!pending || typeof pending !== "object") pending = {};
+  var favOnly = false, allOpen = false, current = "mk";
+  var syncing = false, again = false, flushing = false, dirtyTimer = null, lastOk = null;
+  var status = "init";                          // init | ok | offline | rejected | local
+
+  // ---- DOM ----
+  var boxes = Array.prototype.slice.call(document.querySelectorAll("input[type=checkbox][data-id]"));
+  var favs = Array.prototype.slice.call(document.querySelectorAll(".favbtn"));
+  var notesTa = Array.prototype.slice.call(document.querySelectorAll("textarea.mynote"));
+  var toggles = Array.prototype.slice.call(document.querySelectorAll(".toggle"));
+  var tabBtns = Array.prototype.slice.call(document.querySelectorAll("#tabs button"));
+  var dayBtns = Array.prototype.slice.call(document.querySelectorAll("#daylist button.day"));
+  var nEl = document.getElementById("n"), totalEl = document.getElementById("total"), nfEl = document.getElementById("nf");
+  var head = document.getElementById("parkhead");
+  var expandBtn = document.getElementById("expandAll");
+  var favOnlyBtn = document.getElementById("favOnly");
+  var dot = document.getElementById("dot"), syncText = document.getElementById("syncText");
+  var meName = document.getElementById("meName"), othersLine = document.getElementById("othersLine");
+  var modal = document.getElementById("whoModal"), whoList = document.getElementById("whoList");
+  var whoInput = document.getElementById("whoInput"), whoOk = document.getElementById("whoOk"), whoCancel = document.getElementById("whoCancel");
+  var parkOf = {};
+  boxes.forEach(function (b) { parkOf[b.dataset.id] = b.dataset.park; });
+
+  // ---- 数据访问 ----
+  function mine(id) { return (me && marks[id] && marks[id][me]) || {}; }
+  function anyFav(id) {
+    var ps = marks[id] || {};
+    for (var p in ps) if (ps[p] && ps[p].fav) return true;
+    return false;
+  }
+  function setMine(id, patch) {
+    if (!me) { openModal(); return false; }
+    var cur = mine(id);
+    var row = { item_id: id, person: me,
+      checked: patch.checked !== undefined ? !!patch.checked : !!cur.checked,
+      fav: patch.fav !== undefined ? !!patch.fav : !!cur.fav,
+      note: patch.note !== undefined ? String(patch.note).slice(0, 500) : (cur.note || "") };
+    if (row.checked === !!cur.checked && row.fav === !!cur.fav && row.note === (cur.note || "")) return false;
+    if (!marks[id]) marks[id] = {};
+    marks[id][me] = { checked: row.checked, fav: row.fav, note: row.note, updated_at: new Date().toISOString(), local: true };
+    pending[me + "|" + id] = row;
+    lsSet(LS.cache, marks); lsSet(LS.pending, pending);
+    markDirty();
+    return true;
+  }
+  function markDirty() {
+    clearTimeout(dirtyTimer);
+    dirtyTimer = setTimeout(sync, 600);
+  }
+
+  // ---- 与服务器同步 ----
+  var H = { "apikey": SYNC.key, "Content-Type": "application/json" };
+  function httpError(r) { var e = new Error("HTTP " + r.status); e.status = r.status; return e; }
+  function fetchAll() {
+    var url = SYNC.url + "/rest/v1/" + SYNC.table + "?select=item_id,person,checked,fav,note,updated_at&trip=eq." + encodeURIComponent(SYNC.trip) + "&limit=2000";
+    return fetch(url, { headers: H, cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw httpError(r);
+      return r.json();
+    }).then(function (rows) {
+      if (!Array.isArray(rows)) throw new Error("bad body");
+      var next = {};
+      rows.forEach(function (row) {
+        if (!row || typeof row.item_id !== "string" || typeof row.person !== "string") return;
+        if (!next[row.item_id]) next[row.item_id] = {};
+        next[row.item_id][row.person] = { checked: !!row.checked, fav: !!row.fav, note: typeof row.note === "string" ? row.note : "", updated_at: row.updated_at || "" };
+      });
+      // 本机还没上传成功的改动优先于服务器
+      Object.keys(pending).forEach(function (k) {
+        var p = pending[k];
+        if (!next[p.item_id]) next[p.item_id] = {};
+        next[p.item_id][p.person] = { checked: !!p.checked, fav: !!p.fav, note: p.note || "", updated_at: "", local: true };
+      });
+      marks = next;
+      lsSet(LS.cache, marks);
+    });
+  }
+  function flush() {
+    var keys = Object.keys(pending);
+    if (!keys.length || flushing) return Promise.resolve();
+    flushing = true;
+    var batch = pending; pending = {}; lsSet(LS.pending, pending);
+    var body = keys.map(function (k) {
+      var p = batch[k];
+      return { trip: SYNC.trip, item_id: p.item_id, person: p.person, checked: !!p.checked, fav: !!p.fav, note: p.note || "" };
+    });
+    var url = SYNC.url + "/rest/v1/" + SYNC.table + "?on_conflict=trip,item_id,person";
+    var h = {}; for (var k in H) h[k] = H[k];
+    h["Prefer"] = "resolution=merge-duplicates,return=minimal";
+    return fetch(url, { method: "POST", headers: h, body: JSON.stringify(body) }).then(function (r) {
+      flushing = false;
+      if (!r.ok) throw httpError(r);
+    }, function (e) {
+      flushing = false;
+      throw e;
+    }).then(null, function (e) {
+      var rejected = e && e.status >= 400 && e.status < 500 && e.status !== 408 && e.status !== 429;
+      if (!rejected) {
+        // 网络问题：放回队列，之后重试（期间如果又改了同一项，以新的为准）
+        keys.forEach(function (k) { if (!pending[k]) pending[k] = batch[k]; });
+        lsSet(LS.pending, pending);
+      }
+      if (rejected) e.rejected = true;
+      throw e;
+    });
+  }
+  function sync() {
+    if (!SYNC.url || typeof fetch !== "function") { setStatus("local"); render(); return; }
+    if (syncing) { again = true; return; }
+    syncing = true;
+    var rejected = false;
+    flush().then(null, function (e) { if (e && e.rejected) rejected = true; else throw e; })
+      .then(fetchAll)
+      .then(function () { lastOk = new Date(); setStatus(rejected ? "rejected" : "ok"); },
+            function () { setStatus("offline"); })
+      .then(function () {
+        syncing = false; render();
+        if (again) { again = false; sync(); }
+      });
+  }
+  function setStatus(s) { status = s; }
+  function statusText() {
+    var t = lastOk ? pad2(lastOk.getHours()) + ":" + pad2(lastOk.getMinutes()) : "";
+    var n = Object.keys(pending).length;
+    if (status === "init") return "正在连接共享标注…";
+    if (status === "local") return "本机模式：标注只保存在这台手机";
+    if (status === "offline") return n ? "离线，" + n + " 条改动已存在本机，联网后自动上传" : (t ? "暂时连不上，显示的是 " + t + " 的数据" : "连不上共享服务器，显示本机缓存");
+    if (status === "rejected") return "有改动被服务器拒绝（备注太长？），其余已同步";
+    return n ? "同步中…" : "已同步 " + t;
+  }
+
+  // ---- 渲染 ----
+  function peopleInPark(parkId) {
+    var set = {};
+    boxes.forEach(function (b) {
+      if (b.dataset.park !== parkId) return;
+      var ps = marks[b.dataset.id] || {};
+      for (var p in ps) { var m = ps[p]; if (m && (m.checked || m.fav || m.note)) set[p] = 1; }
+    });
+    return Object.keys(set);
+  }
+  function chip(p, text) { return "<span class='pchip " + personClass(p) + "' title='" + esc(p) + "'>" + esc(shortName(p)) + esc(text) + "</span>"; }
+  function render() {
+    var n = 0, total = 0, nf = 0;
+    boxes.forEach(function (b) {
+      var id = b.dataset.id, row = b.closest(".row"), m = mine(id), ps = marks[id] || {};
+      b.checked = !!m.checked;
+      row.classList.toggle("done", !!m.checked);
+      var favBtn = row.querySelector(".favbtn");
+      favBtn.setAttribute("aria-pressed", m.fav ? "true" : "false");
+      favBtn.textContent = m.fav ? "★" : "☆";
+      row.classList.toggle("faved", !!m.fav);
+      // 别人的标注
+      var chips = "", noteCount = 0, notesHtml = "";
+      Object.keys(ps).sort().forEach(function (p) {
+        var x = ps[p]; if (!x) return;
+        if (x.note) { noteCount++; if (p !== me) notesHtml += "<div class='noteline'>" + chip(p, "") + "<span>" + esc(x.note) + "</span></div>"; }
+        if (p === me) return;
+        var t = (x.checked ? "✓" : "") + (x.fav ? "★" : "");
+        if (t) chips += chip(p, t);
+      });
+      if (noteCount) chips += "<button type='button' class='pchip notechip' data-open='" + id + "'>备注 " + noteCount + "</button>";
+      var oth = document.getElementById("others-" + id);
+      if (oth.innerHTML !== chips) oth.innerHTML = chips;
+      oth.classList.toggle("empty", !chips);
+      var nl = document.getElementById("notes-" + id);
+      if (nl.innerHTML !== (notesHtml || "")) nl.innerHTML = notesHtml || "";
+      var ta = row.querySelector("textarea.mynote");
+      if (document.activeElement !== ta) { var v = m.note || ""; if (ta.value !== v) ta.value = v; }
+      ta.disabled = !me;
+      if (b.dataset.park === current) { total++; if (m.checked) n++; if (m.fav) nf++; }
+      row.classList.toggle("hidden", favOnly && !anyFav(id));
+    });
+    nEl.textContent = n; totalEl.textContent = total; nfEl.textContent = nf;
+    document.querySelectorAll(".walk").forEach(function (w) { w.classList.toggle("hidden", favOnly); });
+    // 同步状态
+    dot.className = "dot " + status;
+    syncText.textContent = statusText();
+    meName.textContent = me || "还没选";
+    var others = peopleInPark(current).filter(function (p) { return p !== me; });
+    othersLine.textContent = others.length ? "本园还有 " + others.join("、") + " 标注过" : "";
+  }
+  function setOpen(btn, open) {
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.textContent = open ? "收起" : "详情";
+    document.getElementById(btn.getAttribute("aria-controls")).classList.toggle("open", open);
+  }
+  function savePark() { lsSet(LS.park, { id: current, day: todayKey() }); }
+  function showPark(id, scroll) {
+    current = id;
+    var park = PARKS.filter(function (p) { return p.id === id; })[0];
+    PARKS.forEach(function (p) { document.getElementById("park-" + p.id).classList.toggle("show", p.id === id); });
+    tabBtns.forEach(function (t) { t.setAttribute("aria-selected", t.dataset.park === id ? "true" : "false"); });
+    dayBtns.forEach(function (d) { d.classList.toggle("active", d.dataset.park === id); });
+    head.innerHTML = "<h2 class='park-title'>" + esc(park.name) + (park.id === "rd" ? " 安排 · " : " 一日路线 · ") + esc(park.day) + "</h2><p class='sub'>" + esc(park.intro) + "</p>";
+    allOpen = false; expandBtn.textContent = "全部展开";
+    render(); savePark();
+    if (scroll) document.getElementById("tabs").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  // ---- 身份选择 ----
+  function openModal() {
+    whoList.innerHTML = PEOPLE.map(function (p) {
+      return "<button type='button' class='whobtn " + personClass(p) + (p === me ? " on" : "") + "' data-who='" + esc(p) + "'>" + esc(p) + "</button>";
+    }).join("");
+    whoInput.value = (me && PEOPLE.indexOf(me) < 0) ? me : "";
+    whoCancel.hidden = !me;
+    modal.hidden = false;
+    document.body.classList.add("noscroll");
+  }
+  function closeModal() { modal.hidden = true; document.body.classList.remove("noscroll"); }
+  function chooseMe(name) {
+    name = String(name || "").trim().slice(0, 20);
+    if (!name) return;
+    me = name; lsSet(LS.me, me);
+    importLegacy();
+    closeModal(); render(); sync();
+  }
+  // 把这台手机上旧版本（没有共享功能时）的勾选和收藏，转成“我”的标注上传一次
+  function importLegacy() {
+    var oc = lsGet(LS.oldChecked, null), of = lsGet(LS.oldFav, null);
+    if (!oc && !of) return;
+    var ids = {};
+    Object.keys(oc || {}).forEach(function (k) { ids[k] = 1; });
+    Object.keys(of || {}).forEach(function (k) { ids[k] = 1; });
+    Object.keys(ids).forEach(function (id) {
+      if (!parkOf[id]) return;
+      var cur = mine(id);
+      setMine(id, { checked: !!cur.checked || !!(oc && oc[id]), fav: !!cur.fav || !!(of && of[id]) });
+    });
+    lsDel(LS.oldChecked); lsDel(LS.oldFav);
+  }
+
+  // ---- 事件 ----
+  boxes.forEach(function (b) {
+    b.addEventListener("change", function () {
+      var want = b.checked;
+      if (!setMine(b.dataset.id, { checked: want })) b.checked = !!mine(b.dataset.id).checked;
+      render();
+    });
+  });
+  favs.forEach(function (f) {
+    f.addEventListener("click", function () { setMine(f.dataset.id, { fav: !mine(f.dataset.id).fav }); render(); });
+  });
+  notesTa.forEach(function (ta) {
+    var t = null;
+    ta.addEventListener("input", function () { clearTimeout(t); t = setTimeout(function () { setMine(ta.dataset.id, { note: ta.value }); render(); }, 800); });
+    ta.addEventListener("blur", function () { clearTimeout(t); setMine(ta.dataset.id, { note: ta.value }); render(); });
+  });
+  document.getElementById("plan").addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-open]");
+    if (!b) return;
+    var tg = document.querySelector(".toggle[aria-controls='more-" + b.dataset.open + "']");
+    if (tg) setOpen(tg, true);
+  });
+  favOnlyBtn.addEventListener("click", function () {
+    favOnly = !favOnly;
+    favOnlyBtn.setAttribute("aria-pressed", favOnly ? "true" : "false");
+    render();
+  });
+  toggles.forEach(function (t) { t.addEventListener("click", function () { setOpen(t, t.getAttribute("aria-expanded") !== "true"); }); });
+  tabBtns.forEach(function (t) { t.addEventListener("click", function () { showPark(t.dataset.park, false); }); });
+  dayBtns.forEach(function (d) { d.addEventListener("click", function () { showPark(d.dataset.park, true); }); });
+  expandBtn.addEventListener("click", function () {
+    allOpen = !allOpen;
+    toggles.forEach(function (t) { if (t.closest(".park").id === "park-" + current) setOpen(t, allOpen); });
+    expandBtn.textContent = allOpen ? "全部收起" : "全部展开";
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!me) { openModal(); return; }
+    if (!window.confirm("清空“" + me + "”在本园的勾选？不影响收藏和别人的标注。")) return;
+    boxes.forEach(function (b) { if (b.dataset.park === current && mine(b.dataset.id).checked) setMine(b.dataset.id, { checked: false }); });
+    render();
+  });
+  document.getElementById("switchMe").addEventListener("click", openModal);
+  whoList.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-who]");
+    if (b) chooseMe(b.dataset.who);
+  });
+  whoOk.addEventListener("click", function () { chooseMe(whoInput.value); });
+  whoInput.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); chooseMe(whoInput.value); } });
+  whoCancel.addEventListener("click", closeModal);
+  document.getElementById("syncNow").addEventListener("click", function () { setStatus("init"); render(); sync(); });
+
+  // 轮询：页面可见时每 5 秒拉一次；回到前台、联网时立刻拉
+  setInterval(function () { if (document.visibilityState !== "hidden") sync(); }, SYNC.pollMs);
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") sync(); });
+  window.addEventListener("online", sync);
+  window.addEventListener("pageshow", function (ev) { if (ev.persisted) sync(); });
+
+  // ---- 启动 ----
+  (function initPark() {
+    var saved = lsGet(LS.park, null), tk = todayKey(), old = lsGet(LS.oldPark, null);
+    var id = (saved && saved.day === tk && saved.id) || DAY_PARK[tk] || (saved && saved.id) || old || "mk";
+    if (!document.getElementById("park-" + id)) id = "mk";
+    showPark(id, false);
+  })();
+  if (!me) openModal();
+  sync();
+})();
+</script>
+</body>
+</html>
