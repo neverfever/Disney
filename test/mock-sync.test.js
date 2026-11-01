@@ -11,11 +11,14 @@ const OUT = path.resolve(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true 
 
 const store = new Map(); // key trip|item|person -> row
 const log = { gets: 0, posts: [] };
-let failNetwork = false;
+let failNetwork = false, failStatus = 0, failPost = 0, holdPost = 0;
 
 async function mock(route) {
   const req = route.request();
   if (failNetwork) return route.abort('internetdisconnected');
+  if (failStatus) return route.fulfill({ status: failStatus, contentType: 'application/json', body: '{"message":"nope"}' });
+  if (req.method() === 'POST' && failPost) return route.fulfill({ status: failPost, contentType: 'application/json', body: '{"message":"bad row"}' });
+  if (req.method() === 'POST' && holdPost) await new Promise(r => setTimeout(r, holdPost));
   if (req.method() === 'GET') {
     log.gets++;
     return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([...store.values()]) });
@@ -56,8 +59,11 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
   await A.page.click('.whobtn:has-text("爸爸")');
   assert(await A.page.$('#whoModal[hidden]'), 'A: modal closes after choosing 爸爸');
   assert((await A.page.textContent('#meName')) === '爸爸', 'A: identity shown');
-  // Today is 11/1 → rest-day tab opens by default
-  assert((await A.page.getAttribute('#tabs button[data-park=rd]', 'aria-selected')) === 'true', 'A: opens on today\'s park (rd)');
+  // Opens on today's park (Orlando date), whatever day the test runs
+  const ORL = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const EXPECT = { '2026-11-01': 'rd', '2026-11-02': 'hs', '2026-11-03': 'ep', '2026-11-04': 'mk', '2026-11-05': 'ak' }[ORL] || 'mk';
+  assert((await A.page.getAttribute(`#tabs button[data-park=${EXPECT}]`, 'aria-selected')) === 'true', `A: opens on today's park (${EXPECT}, Orlando ${ORL})`);
+  await A.page.click('#tabs button[data-park=rd]');
   await A.page.check('input[data-id=rd-lego]');
   await A.page.waitForFunction(() => document.getElementById('n').textContent === '1');
   await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
@@ -67,6 +73,7 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
   // ---- 妈妈 ----
   const B = await mk('B');
   await B.page.click('.whobtn:has-text("妈妈")');
+  await B.page.click('#tabs button[data-park=rd]');
   await B.page.waitForFunction(() => document.getElementById('others-rd-lego').textContent.includes('爸✓'), null, { timeout: 8000 });
   assert(true, 'B: sees 爸✓ chip on rd-lego');
   assert(!(await B.page.isChecked('input[data-id=rd-lego]')), 'B: own checkbox is NOT ticked by A\'s tick');
@@ -109,9 +116,40 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
   await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 10000 });
   assert(store.get('wdw-2026-11|rd-goofy|爸爸').checked === true, 'A: pending flushed after reconnect');
 
+  // ---- 404/401 from the API are temporary: queued rows stay and upload later ----
+  failStatus = 404;
+  await A.page.check('input[data-id=rd-wod]');
+  await A.page.waitForFunction(() => /离线/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
+  let pend2 = await A.page.evaluate(() => JSON.parse(localStorage.getItem('wdw-plan-pending')));
+  assert(pend2 && pend2['爸爸|rd-wod'] && pend2['爸爸|rd-wod'].checked === true, 'A: 404 keeps the change queued');
+  failStatus = 0;
+  await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 10000 });
+  assert(store.get('wdw-2026-11|rd-wod|爸爸').checked === true, 'A: queued change uploaded once the API is back');
+
+  // ---- queue entry survives until the POST is acknowledged ----
+  holdPost = 2500;
+  await A.page.check('input[data-id=rd-carousel]');
+  await A.page.waitForTimeout(1500);
+  pend2 = await A.page.evaluate(() => JSON.parse(localStorage.getItem('wdw-plan-pending')));
+  assert(pend2 && pend2['爸爸|rd-carousel'], 'A: entry stays in localStorage while POST is in flight');
+  holdPost = 0;
+  await A.page.waitForFunction(() => !JSON.parse(localStorage.getItem('wdw-plan-pending') || '{}')['爸爸|rd-carousel'], null, { timeout: 8000 });
+  assert(store.get('wdw-2026-11|rd-carousel|爸爸').checked === true, 'A: entry removed only after the server acknowledged');
+
+  // ---- 400 (data rejected) is dropped, not retried forever ----
+  failPost = 400;
+  await A.page.check('input[data-id=rd-boat]');
+  await A.page.waitForFunction(() => /拒绝/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
+  pend2 = await A.page.evaluate(() => JSON.parse(localStorage.getItem('wdw-plan-pending')));
+  assert(!pend2['爸爸|rd-boat'], 'A: 400 drops the change from the queue');
+  failPost = 0;
+  await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 10000 });
+  assert(!store.has('wdw-2026-11|rd-boat|爸爸'), 'A: rejected change never re-sent');
+
   // ---- reload keeps identity and marks ----
   await A.page.reload();
   assert(await A.page.$('#whoModal[hidden]'), 'A: no modal after reload');
+  assert((await A.page.getAttribute('#tabs button[data-park=rd]', 'aria-selected')) === 'true', 'A: tab chosen today survives reload');
   await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 8000 });
   assert(await A.page.isChecked('input[data-id=rd-lego]'), 'A: tick restored after reload');
   assert((await A.page.textContent('#others-rd-lego')).includes('妈★'), 'A: chips restored after reload');

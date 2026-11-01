@@ -57,11 +57,11 @@
   .day.rest { cursor: default; }
   .day .d { font-weight: 600; line-height: 1.3; }
   .day .d small { display: block; font-weight: 400; color: var(--ink-3); font-size: 12px; }
-  .day .park { font-weight: 600; font-size: 16px; }
+  .day .pname { font-weight: 600; font-size: 16px; }
   .day .wx { font-size: 13px; color: var(--ink-2); margin: 2px 0; }
   .day .why { font-size: 13px; color: var(--ink-3); }
   .day.active { background: var(--accent-soft); }
-  .day.active .park { color: var(--accent); }
+  .day.active .pname { color: var(--accent); }
   .rain { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: 1px; }
   .rain.hi { background: var(--no-bg); color: var(--no-ink); }
   .rain.mid { background: var(--dad-bg); color: var(--dad-ink); }
@@ -138,7 +138,7 @@
   .more dd { margin: 0; color: var(--ink); }
   .more dd.warn { color: var(--no-ink); }
   .walk { font-size: 13px; color: var(--ink-3); padding: 6px 14px 6px 40px; background: var(--done); border-top: 1px solid var(--line); }
-  .row.done .body { opacity: .5; }
+  .row.done .name, .row.done .stars, .row.done .tags, .row.done .desc, .row.done .meta { opacity: .5; }
   .row.hidden { display: none; }
   .row.done .name { text-decoration: line-through; text-decoration-color: var(--ink-3); }
   @media (prefers-reduced-motion: reduce) { .toggle::after { transition: none; } }
@@ -170,7 +170,7 @@
   .pc5 { background: var(--p5-bg); color: var(--p5-ink); }
   .notes .noteline { display: flex; gap: 6px; align-items: baseline; margin: 0 0 6px; }
   .notes .noteline .pchip { flex: none; }
-  .mynote { width: 100%; font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); resize: vertical; }
+  .mynote { width: 100%; font: inherit; font-size: 16px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); resize: vertical; }
   .mynote:disabled { opacity: .5; }
   .modal { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; justify-content: center; padding: 16px; }
   .modal[hidden] { display: none; }
@@ -738,15 +738,22 @@ function personClass(name) {
   if (i < 0) { i = 0; for (var k = 0; k < name.length; k++) i = (i * 31 + name.charCodeAt(k)) % 6; }
   return "pc" + (i % 6);
 }
-function shortName(name) { return name.length > 2 ? name.slice(0, 2) : name; }
+function shortName(name) { return name; }
 function pad2(n) { return (n < 10 ? "0" : "") + n; }
-function todayKey() { var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+// 行程日期按奥兰多时间算，手机还停在北京时间也不会提前翻到明天
+function todayKey() {
+  try {
+    var s = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  } catch (e) {}
+  var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+}
 
 (function renderWeather() {
   var out = "";
   WEATHER.days.forEach(function (d) {
     out += "<button type='button' class='day' data-park='" + esc(d.park) + "'><div class='d'>" + esc(d.dow) + "<small>" + esc(d.date) + "</small></div><div>" +
-      "<div class='park'>" + esc(d.title) + "</div>" +
+      "<div class='pname'>" + esc(d.title) + "</div>" +
       "<div class='wx'>" + esc(d.wx) + "<span class='rain " + (d.level === "hi" ? "hi" : d.level === "lo" ? "lo" : "mid") + "'>" + esc(d.rain) + "</span></div>" +
       "<div class='why'>" + esc(d.why) + "</div></div></button>";
   });
@@ -810,6 +817,10 @@ document.getElementById("plan").innerHTML = html;
   if (!marks || typeof marks !== "object") marks = {};
   var pending = lsGet(LS.pending, {});          // 未上传的改动 {person|item_id: row}
   if (!pending || typeof pending !== "object") pending = {};
+  Object.keys(pending).forEach(function (k) {   // 丢掉损坏的条目
+    var p = pending[k];
+    if (!p || typeof p !== "object" || typeof p.item_id !== "string" || typeof p.person !== "string") delete pending[k];
+  });
   var favOnly = false, allOpen = false, current = "mk";
   var syncing = false, again = false, flushing = false, dirtyTimer = null, lastOk = null;
   var status = "init";                          // init | ok | offline | rejected | local
@@ -861,10 +872,17 @@ document.getElementById("plan").innerHTML = html;
 
   // ---- 与服务器同步 ----
   var H = { "apikey": SYNC.key, "Content-Type": "application/json" };
+  var TIMEOUT = 30000;                          // 卡住的请求 30 秒后放弃，走离线/重试路径
   function httpError(r) { var e = new Error("HTTP " + r.status); e.status = r.status; return e; }
+  function timedFetch(url, opts) {
+    var ac = (typeof AbortController === "function") ? new AbortController() : null;
+    if (ac) opts.signal = ac.signal;
+    var tm = setTimeout(function () { if (ac) ac.abort(); }, TIMEOUT);
+    return fetch(url, opts).then(function (r) { clearTimeout(tm); return r; }, function (e) { clearTimeout(tm); throw e; });
+  }
   function fetchAll() {
     var url = SYNC.url + "/rest/v1/" + SYNC.table + "?select=item_id,person,checked,fav,note,updated_at&trip=eq." + encodeURIComponent(SYNC.trip) + "&limit=2000";
-    return fetch(url, { headers: H, cache: "no-store" }).then(function (r) {
+    return timedFetch(url, { headers: H, cache: "no-store" }).then(function (r) {
       if (!r.ok) throw httpError(r);
       return r.json();
     }).then(function (rows) {
@@ -889,28 +907,33 @@ document.getElementById("plan").innerHTML = html;
     var keys = Object.keys(pending);
     if (!keys.length || flushing) return Promise.resolve();
     flushing = true;
-    var batch = pending; pending = {}; lsSet(LS.pending, pending);
+    // 上传期间条目留在队列里，服务器确认后才删（期间又改了同一项的话，新条目留下，下次再传）
+    var batch = {};
+    keys.forEach(function (k) { batch[k] = pending[k]; });
     var body = keys.map(function (k) {
       var p = batch[k];
       return { trip: SYNC.trip, item_id: p.item_id, person: p.person, checked: !!p.checked, fav: !!p.fav, note: p.note || "" };
     });
+    function drop() {
+      keys.forEach(function (k) { if (pending[k] === batch[k]) delete pending[k]; });
+      lsSet(LS.pending, pending);
+    }
     var url = SYNC.url + "/rest/v1/" + SYNC.table + "?on_conflict=trip,item_id,person";
     var h = {}; for (var k in H) h[k] = H[k];
     h["Prefer"] = "resolution=merge-duplicates,return=minimal";
-    return fetch(url, { method: "POST", headers: h, body: JSON.stringify(body) }).then(function (r) {
+    return timedFetch(url, { method: "POST", headers: h, body: JSON.stringify(body) }).then(function (r) {
       flushing = false;
       if (!r.ok) throw httpError(r);
+      var ct = r.headers.get("content-type") || "";
+      if (ct.indexOf("text/html") >= 0) throw new Error("captive portal");   // 酒店/园区 wifi 登录页冒充 200
+      drop();
     }, function (e) {
       flushing = false;
       throw e;
     }).then(null, function (e) {
-      var rejected = e && e.status >= 400 && e.status < 500 && e.status !== 408 && e.status !== 429;
-      if (!rejected) {
-        // 网络问题：放回队列，之后重试（期间如果又改了同一项，以新的为准）
-        keys.forEach(function (k) { if (!pending[k]) pending[k] = batch[k]; });
-        lsSet(LS.pending, pending);
-      }
-      if (rejected) e.rejected = true;
+      // 只有数据本身被拒（约束、格式）才丢弃；401/403/404/5xx/超时都当作暂时连不上，留在队列重试
+      var rejected = e && (e.status === 400 || e.status === 409 || e.status === 413 || e.status === 422);
+      if (rejected) { drop(); e.rejected = true; }
       throw e;
     });
   }
@@ -1017,8 +1040,14 @@ document.getElementById("plan").innerHTML = html;
     whoCancel.hidden = !me;
     modal.hidden = false;
     document.body.classList.add("noscroll");
+    var first = whoList.querySelector(".whobtn.on") || whoList.querySelector(".whobtn");
+    if (first) first.focus();
   }
-  function closeModal() { modal.hidden = true; document.body.classList.remove("noscroll"); }
+  function closeModal() {
+    modal.hidden = true; document.body.classList.remove("noscroll");
+    if (me) document.getElementById("switchMe").focus();
+  }
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !modal.hidden && me) closeModal(); });
   function chooseMe(name) {
     name = String(name || "").trim().slice(0, 20);
     if (!name) return;
@@ -1078,7 +1107,8 @@ document.getElementById("plan").innerHTML = html;
   });
   document.getElementById("reset").addEventListener("click", function () {
     if (!me) { openModal(); return; }
-    if (!window.confirm("清空“" + me + "”在本园的勾选？不影响收藏和别人的标注。")) return;
+    var pk = PARKS.filter(function (p) { return p.id === current; })[0];
+    if (!window.confirm("清空“" + me + "”在 " + (pk ? pk.name : "本园") + " 的勾选？不影响收藏和别人的标注。")) return;
     boxes.forEach(function (b) { if (b.dataset.park === current && mine(b.dataset.id).checked) setMine(b.dataset.id, { checked: false }); });
     render();
   });

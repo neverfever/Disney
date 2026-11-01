@@ -30,6 +30,7 @@ async function neutralize() {
   const A = await mk('A');
   await A.page.fill('#whoInput', '测试');
   await A.page.click('#whoOk');
+  await A.page.click('#tabs button[data-park=rd]');
   await A.page.waitForFunction(() => /已同步/.test(document.getElementById('syncText').textContent), null, { timeout: 30000 });
   assert(true, 'A: first sync against the real server from file:// (origin null)');
   await A.page.check('input[data-id=rd-lego]');
@@ -42,6 +43,7 @@ async function neutralize() {
 
   const B = await mk('B');
   await B.page.click('.whobtn:has-text("爸爸")');
+  await B.page.click('#tabs button[data-park=rd]');
   try {
     await B.page.waitForFunction(() => document.getElementById('others-rd-lego').textContent.includes('测试✓★'), null, { timeout: 40000 });
     assert(true, 'B: second phone sees 测试✓★ from the real server');
