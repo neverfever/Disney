@@ -774,11 +774,14 @@ PARKS.forEach(function (p) {
         "<div class='body'><div class='name'>" + esc(it.zh) + " <span class='en'>" + esc(it.en) + "</span></div>" +
         (it.stars ? "<div class='stars'>" + starStr(it.stars) + "</div>" : "") +
         "<div class='tags'>" + it.tags.map(function (t) { return "<span class='tag " + t[0] + "'>" + esc(t[1]) + "</span>"; }).join("") +
+          (it.transit ? "" :
           "<span class='tag " + (it.venue.indexOf("室内") === 0 ? "v-in" : "v-out") + "'>项目" + esc(it.venue) + "</span>" +
-          "<span class='tag " + qClass(it.queue) + "'>排队" + esc(it.queue) + "</span></div>" +
+          "<span class='tag " + qClass(it.queue) + "'>排队" + esc(it.queue) + "</span>") + "</div>" +
         "<div class='others' id='others-" + it.id + "' data-id='" + it.id + "'></div>" +
         "<p class='desc'>" + esc(it.desc) + "</p>" +
-        "<div class='meta'><span>游玩 " + esc(it.ride) + "</span><span>排队 " + esc(it.wait.split("；")[0]) + "</span></div>" +
+        (it.transit
+          ? "<div class='meta'><span>用时 " + esc(it.ride) + "</span><span>费用 " + esc(it.wait.split("；")[0]) + "</span></div>"
+          : "<div class='meta'><span>游玩 " + esc(it.ride) + "</span><span>排队 " + esc(it.wait.split("；")[0]) + "</span></div>") +
         "<button type='button' class='toggle' aria-expanded='false' aria-controls='more-" + it.id + "'>详情</button>" +
         "</div></div>" +
         "<div class='more' id='more-" + it.id + "'><dl>" +
@@ -786,9 +789,11 @@ PARKS.forEach(function (p) {
           "<textarea class='mynote' data-id='" + it.id + "' rows='2' maxlength='500' placeholder='写一句备注，大家都能看到' aria-label='我的备注：" + esc(it.zh) + "'></textarea></dd>" +
         "<dt>英文名</dt><dd>" + esc(it.en) + "</dd>" +
         "<dt>内容</dt><dd>" + esc(it.about) + "</dd>" +
-        "<dt>游玩时间</dt><dd>" + esc(it.ride) + "</dd>" +
-        "<dt>排队时间</dt><dd>" + esc(it.wait) + "</dd>" +
-        "<dt>室内/室外</dt><dd>项目" + esc(it.venue) + "；排队区" + esc(it.queue) + qNote(it.queue) + "</dd>" +
+        (it.transit
+          ? "<dt>用时</dt><dd>" + esc(it.ride) + "</dd><dt>费用</dt><dd>" + esc(it.wait) + "</dd>"
+          : "<dt>游玩时间</dt><dd>" + esc(it.ride) + "</dd>" +
+            "<dt>排队时间</dt><dd>" + esc(it.wait) + "</dd>" +
+            "<dt>室内/室外</dt><dd>项目" + esc(it.venue) + "；排队区" + esc(it.queue) + qNote(it.queue) + "</dd>") +
         "<dt>注意事项</dt><dd class='warn'>" + esc(it.tips) + "</dd>" +
         "</dl></div></div>";
       if (it.walk) html += "<div class='walk'>" + esc(it.walk) + "</div>";
