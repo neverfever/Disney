@@ -67,6 +67,7 @@
   .rain.mid { background: var(--dad-bg); color: var(--dad-ink); }
   .rain.lo { background: var(--ok-bg); color: var(--ok-ink); }
   .days .tip { font-size: 13px; color: var(--ink-3); margin: 8px 0 0; }
+  .days .wxmeta { font-size: 12px; color: var(--ink-3); margin: 6px 0 0; }
 
   .tabs { display: flex; gap: 6px; margin: 0 0 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
   .tabs button { flex: none; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink-2); cursor: pointer; }
@@ -193,29 +194,9 @@
 
   <div class="days">
     <h2>按天气分配的园区</h2>
-    <div class="daylist" id="daylist">
-      <button type="button" class="day" data-park="rd"><div class="d">周日<small>11/1</small></div><div>
-        <div class="park">休息日 · 奥特莱斯 + Disney Springs</div>
-        <div class="wx">阵雨+雷雨 27°/21°<span class="rain hi">70%+ 有积水</span></div>
-        <div class="why">雨最大的一天，也是万圣节派对最后一场，MK 下午 6 点清场。上午 Disney Springs，13:30 太阳马戏团，下午奥特莱斯。</div></div></button>
-      <button type="button" class="day" data-park="hs"><div class="d">周一<small>11/2</small></div><div>
-        <div class="park">Hollywood Studios</div>
-        <div class="wx">上午阵雨，下午转好 27°/21°<span class="rain mid">60%</span></div>
-        <div class="why">室内项目最多。可以晚起，中午雨停再进园。</div></div></button>
-      <button type="button" class="day" data-park="ep"><div class="d">周二<small>11/3</small></div><div>
-        <div class="park">Epcot</div>
-        <div class="wx">多云转晴，零星阵雨 28°/22°<span class="rain mid">30–50%</span></div>
-        <div class="why">上午玩室内项目，下午放晴逛 World Showcase。</div></div></button>
-      <button type="button" class="day" data-park="mk"><div class="d">周三<small>11/4</small></div><div>
-        <div class="park">Magic Kingdom</div>
-        <div class="wx">晴到多云 28°/22°<span class="rain lo">25% 本周最好</span></div>
-        <div class="why">户外项目最多、最累的园区放在最好的一天。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。</div></div></button>
-      <button type="button" class="day" data-park="ak"><div class="d">周四<small>11/5</small></div><div>
-        <div class="park">Animal Kingdom</div>
-        <div class="wx">晴，午后局部雷雨 29°/20°<span class="rain mid">50% 午后</span></div>
-        <div class="why">动物早上最活跃，这个园关得早，下午 2–3 点雷雨前基本玩完。</div></div></button>
-    </div>
-    <p class="tip">雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。周二晚再看一次预报，周四更好就把 MK 和 AK 对调。游泳放在周二或周四傍晚，天气好、回酒店早。</p>
+    <div class="daylist" id="daylist"></div>
+    <p class="tip" id="wxTip"></p>
+    <p class="wxmeta" id="wxMeta"></p>
   </div>
 
   <div class="tabs" role="tablist" id="tabs"></div>
@@ -269,8 +250,32 @@
 </div>
 
 <script>
+// ---- 天气与园区分配（每 6 小时由定时任务按 NWS 预报更新；level: hi ≥60%、mid 35–59%、lo <35%） ----
+var WEATHER = {
+  updated: "11/1 00:55（美东）",
+  source: "美国国家气象局 NWS，Lake Buena Vista 网格",
+  days: [
+    { park: "rd", dow: "周日", date: "11/1", title: "休息日 · 奥特莱斯 + Disney Springs",
+      wx: "上午阴、零星阵雨，下午 1 点后雷阵雨 26°/22°", rain: "70% 下午", level: "hi",
+      why: "雨最大的一天，下午雷雨概率最高；也是万圣节派对最后一场，MK 下午 6 点清场。上午 Disney Springs，13:30 太阳马戏团（室内），下午奥特莱斯。阵风 40 km/h，热气球不飞。" },
+    { park: "hs", dow: "周一", date: "11/2", title: "Hollywood Studios",
+      wx: "全天随时阵雨雷雨，间歇有太阳 27°/20°", rain: "60% 全天", level: "mid",
+      why: "预报有变：雨不再只在上午，全天都可能下。室内项目最多的园区正合适，不用抢早入园，看 App 雷达挑雨歇去 Toy Story Land。" },
+    { park: "ep", dow: "周二", date: "11/3", title: "Epcot",
+      wx: "以晴为主，午后可能雷阵雨 28°/21°", rain: "40% 午后", level: "mid",
+      why: "上午基本不下（20%）。先玩室内项目，下午逛 World Showcase，雷阵雨来了就进各国馆躲一会儿。" },
+    { park: "mk", dow: "周三", date: "11/4", title: "Magic Kingdom",
+      wx: "晴 29°/20°", rain: "20% 本周最好", level: "lo",
+      why: "户外项目最多、最累的园区放在最好的一天。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" },
+    { park: "ak", dow: "周四", date: "11/5", title: "Animal Kingdom",
+      wx: "晴，午后局部雷阵雨 28°/19°", rain: "30% 午后", level: "lo",
+      why: "动物早上最活跃，上午几乎不下雨（<10%）。这个园关得早，下午 1 点后雷雨概率升到 30%，玩完 Pandora 和 Asia 就撤。" }
+  ],
+  tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。周三、周四都是好天：NWS 说周三更干（20% 对 30%），Open-Meteo 模型反过来说周四更干——周二晚再看一次，周四明显更好再把 MK 和 AK 对调。游泳放在周二或周四傍晚。"
+};
+
 var PARKS = [
-{ id: "rd", name: "休息日", day: "周日 11/1", intro: "全天阵雨+雷雨，安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 5–10 分钟，奥特莱斯回酒店叫车 15 分钟（约 15 美元）。",
+{ id: "rd", name: "休息日", day: "周日 11/1", intro: "上午零星阵雨、下午 1 点后雷阵雨（70%），安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 5–10 分钟，奥特莱斯回酒店叫车 15 分钟（约 15 美元）。",
   skip: "游泳别排这天：佛州有闪电时泳池必须关闭，雷雨天开开关关。挪到周二 Epcot 回来后或周四 Animal Kingdom 回来后。Aerophile 热气球雨天和风大不飞。万圣节派对当晚，Magic Kingdom 6 点清场，不进园。",
   blocks: [
   { no: 1, title: "上午", where: "Disney Springs · 酒店巴士 25 分钟", note: "商店 10:00 开门，9:20 到酒店巴士站。先逛 Marketplace（LEGO 那头），再往 West Side 剧场方向走。", items: [
@@ -351,7 +356,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "上午有雨，不用抢早入园。10 点左右进园，先玩室内的，雨停后再去 Toy Story Land。园区不大，走路少。",
+{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "全天都可能有阵雨雷雨（60%），间歇出太阳。不用抢早入园，9:30–10 点进园先玩室内的，雨歇时（看 App 雷达）再去 Toy Story Land。园区不大，走路少。",
   skip: "直接跳过：Tower of Terror（5岁 115cm 够但自由落体太吓人）、Rock ’n’ Roller Coaster 122cm（不够）。Muppet*Vision 已关闭，Monsters Inc 新园区施工中。身高：3岁 90cm 能坐外星人飞碟 81cm；5岁 115cm 能坐 Slinky、Smugglers、Rise、Star Tours。",
   blocks: [
   { no: 1, title: "上午（雨中）", where: "Hollywood Blvd 入口 → Animation Courtyard", note: "这两块离入口最近，全是室内。", items: [
@@ -428,7 +433,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "ep", name: "Epcot", day: "周二 11/3", intro: "Epcot 最大，一圈 3 公里以上，推车一定要带。早入园直奔 Frozen，下午放晴再绕 World Showcase。11 月可能还在 Food & Wine 美食节，各国摊位有小份菜。",
+{ id: "ep", name: "Epcot", day: "周二 11/3", intro: "Epcot 最大，一圈 3 公里以上，推车一定要带。上午几乎不下雨，早入园直奔 Frozen；下午 40% 雷阵雨，绕 World Showcase 时雨来了就进各国馆躲。11 月可能还在 Food & Wine 美食节，各国摊位有小份菜。",
   skip: "直接跳过：Mission: SPACE（5岁够但是旋转模拟器容易晕）、Guardians of the Galaxy 107cm（5岁够但倒退发射太刺激）。爸爸想玩 Guardians 可以在午睡时间买 Single Pass。身高：3岁 90cm 在 Epcot 没有身高限制的项目都能玩；5岁 115cm 能坐 Soarin’ 和 Test Track。",
   blocks: [
   { no: 1, title: "早入园", where: "World Showcase · Norway 和 Mexico（湖的左侧）", note: "早入园开放 Frozen 和 Remy，直奔 Frozen。", items: [
@@ -628,7 +633,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "ak", name: "Animal Kingdom", day: "周四 11/5", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长，下午 2–3 点雷雨前基本玩完，下午可以回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
+{ id: "ak", name: "Animal Kingdom", day: "周四 11/5", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长；上午几乎不下雨，下午 1 点后雷阵雨 30%，基本玩完就回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
   skip: "直接跳过：Expedition Everest（5岁 115cm 够但有倒退和雪怪，对5岁偏吓人，不建议）；Kali River Rapids（5岁够但会全身湿透，这天下午有雷雨，别坐）。DinoLand 整片关闭施工。身高：3岁 90cm 在 AK 只能玩无身高项目；5岁 115cm 能坐 Flight of Passage。",
   blocks: [
   { no: 1, title: "早入园 / 一开园", where: "Africa · 进门后沿左边一直走到底，约 10 分钟", note: "早入园开放 Pandora 和 Safari，但 Safari 早上动物最多，先去。", items: [
@@ -735,6 +740,19 @@ function personClass(name) {
 function shortName(name) { return name.length > 2 ? name.slice(0, 2) : name; }
 function pad2(n) { return (n < 10 ? "0" : "") + n; }
 function todayKey() { var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+
+(function renderWeather() {
+  var out = "";
+  WEATHER.days.forEach(function (d) {
+    out += "<button type='button' class='day' data-park='" + esc(d.park) + "'><div class='d'>" + esc(d.dow) + "<small>" + esc(d.date) + "</small></div><div>" +
+      "<div class='park'>" + esc(d.title) + "</div>" +
+      "<div class='wx'>" + esc(d.wx) + "<span class='rain " + (d.level === "hi" ? "hi" : d.level === "lo" ? "lo" : "mid") + "'>" + esc(d.rain) + "</span></div>" +
+      "<div class='why'>" + esc(d.why) + "</div></div></button>";
+  });
+  document.getElementById("daylist").innerHTML = out;
+  document.getElementById("wxTip").textContent = WEATHER.tip;
+  document.getElementById("wxMeta").textContent = "预报来源：" + WEATHER.source + "，更新于 " + WEATHER.updated + "。每 6 小时自动核对一次，页面会随之更新。";
+})();
 
 var html = "", tabs = "";
 PARKS.forEach(function (p) {
