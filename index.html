@@ -917,7 +917,7 @@ document.getElementById("plan").innerHTML = html;
     if (status === "local") return "本机模式：标注只保存在这台手机";
     if (status === "offline") return n ? "离线，" + n + " 条改动已存在本机，联网后自动上传" : (t ? "暂时连不上，显示的是 " + t + " 的数据" : "连不上共享服务器，显示本机缓存");
     if (status === "rejected") return "有改动被服务器拒绝（备注太长？），其余已同步";
-    return n ? "同步中…" : "已同步 " + t;
+    return (n || flushing) ? "同步中…" : "已同步 " + t;
   }
 
   // ---- 渲染 ----
