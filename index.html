@@ -253,6 +253,7 @@
 // ---- 天气与园区分配（每 6 小时由定时任务按 NWS 预报更新；level: hi ≥60%、mid 35–59%、lo <35%） ----
 var WEATHER = {
   updated: "11/1 00:55（美东）",
+  checked: "11/1 01:40（美东）",
   source: "美国国家气象局 NWS，Lake Buena Vista 网格",
   days: [
     { park: "rd", dow: "周日", date: "11/1", title: "休息日 · 奥特莱斯 + Disney Springs",
@@ -751,7 +752,7 @@ function todayKey() { var d = new Date(); return d.getFullYear() + "-" + pad2(d.
   });
   document.getElementById("daylist").innerHTML = out;
   document.getElementById("wxTip").textContent = WEATHER.tip;
-  document.getElementById("wxMeta").textContent = "预报来源：" + WEATHER.source + "，更新于 " + WEATHER.updated + "。每 6 小时自动核对一次，页面会随之更新。";
+  document.getElementById("wxMeta").textContent = "预报来源：" + WEATHER.source + "，发布于 " + WEATHER.updated + "；最近核对 " + WEATHER.checked + "。每 6 小时自动核对一次，有变化页面会随之更新。";
 })();
 
 var html = "", tabs = "";
