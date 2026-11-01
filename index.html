@@ -273,9 +273,23 @@ var WEATHER = {
 };
 
 var PARKS = [
-{ id: "rd", name: "休息日", day: "周日 11/1", intro: "上午零星阵雨、中午 12 点起雷阵雨（70%），安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 5–10 分钟，奥特莱斯回酒店叫车 15 分钟（约 15 美元）。",
+{ id: "rd", name: "休息日", day: "周日 11/1", intro: "上午零星阵雨、中午 12 点起雷阵雨（70%），安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 12 分钟（约 12–20 美元），奥特莱斯回酒店叫车约 20 分钟（约 20–30 美元）。两个孩子按佛州法律都要安全座椅，怎么解决见下面“交通怎么走”。",
   skip: "游泳别排这天：佛州有闪电时泳池必须关闭，雷雨天开开关关。挪到周二 Epcot 回来后或周四 Animal Kingdom 回来后。Aerophile 热气球雨天和风大不飞。万圣节派对当晚，Magic Kingdom 6 点清场，不进园。",
   blocks: [
+  { no: "车", title: "交通怎么走", where: "今天三段路 · 没有租车", note: "佛州法律：3 岁必须坐五点式安全座椅，5 岁可以用增高垫。出租车和网约车在法律上豁免，但 Uber/Lyft 司机可以拒载没有座椅的孩子，所以要么用 Uber 的 Car Seat 选项，要么自带座椅/增高垫。", items: [
+    { id: "rd-go-springs", transit: true, zh: "酒店 → Disney Springs", en: "Disney bus from All-Star Movies", stars: 0, tags: [["ok","免费巴士"]],
+      desc: "All-Star Movies 大堂 Cinema Hall 外的巴士站，9:00–9:30 开始发车，约 20 分钟一班，车程 18–25 分钟（可能先停 All-Star Sports、Music）。到站是 Disney Springs 的 Town Center 巴士环（Lime 和 Orange 停车楼之间），往西走 5–10 分钟到 West Side 的剧场。", ride: "18–25 分钟 + 等车", wait: "免费",
+      about: "Disney Springs 今天 10:00–23:00。回程也在 Town Center 巴士环上车，巴士开到闭园后约 1 小时（约午夜）。今年 6 月起 Springs 回酒店的巴士只给迪士尼酒店住客坐，上车要出示 MagicBand 或房卡。Springs 没有船去 All-Star。",
+      tips: "9:20 到站。推车可以上巴士，但要折叠。雷雨不影响巴士。", walk: "15:00 看完戏从剧场后门出去就是上车点 ↓" },
+    { id: "rd-go-outlet", transit: true, zh: "Springs → 奥特莱斯", en: "Uber / Lyft from the West Side loop", stars: 0, tags: [["dad","叫车"],["h","要安全座椅"]],
+      desc: "Disney Springs 只有两个网约车上车点：West Side 巴士环（Drawn to Life 剧场正后方，Uber 8、9 号位）和 Marketplace 巴士环（World of Disney 那头）。停车楼里不能上车。目的地填 Orlando Vineland Premium Outlets, 8200 Vineland Ave，约 4.4 英里、12 分钟。", ride: "12 分钟", wait: "UberX 约 12–20 美元；雨天会涨价，叫一次就等着别取消（取消会排到队尾）",
+      about: "能不能不叫车？不能：Minnie Van（迪士尼的 Lyft 车，带 2 个儿童座椅）只在迪士尼园区内跑，不去奥特莱斯；Lynx 公交和 I-Ride 电车要换乘 1.5–2 小时、两段露天等车；奥特莱斯以前的酒店免费接驳车已经停了。出租车可以打 Mears 407-422-2222，一般没有安全座椅。",
+      tips: "安全座椅：Uber 在奥兰多有 “Uber Car Seat” 车型，+10 美元，但一辆车只带 1 个座椅（IMMI GO，适合 22–48 磅、31–52 英寸、2 岁以上）——3 岁坐这个，5 岁自带增高垫，或者叫两辆。Uber 官网写这个车型要用 Uber Reserve 预约，现在就在 app 里看 15:15 能不能订到。Lyft 在奥兰多没有座椅选项。也可以预约 Kidmoto（kidmoto.taxi，带 1–4 个座椅的专车，要提前订）。Disney 租的推车不能带出 Springs，上车前先还。", walk: "15:15 出发，15:30 到 ↓" },
+    { id: "rd-go-home", transit: true, zh: "奥特莱斯 → 酒店", en: "Uber / Lyft back to All-Star Movies", stars: 0, tags: [["dad","叫车"],["h","要安全座椅"]],
+      desc: "奥特莱斯的网约车上车点在 The Promenade 旁、Information Center 附近（Ford’s Garage 餐厅就在那里）。直接叫到 Disney’s All-Star Movies Resort, 1901 W Buena Vista Dr，约 8 英里、17–25 分钟。", ride: "17–25 分钟", wait: "UberX 约 20–30 美元；雨天会涨价",
+      about: "省钱走法是叫车回 Disney Springs（10 分钟）再坐免费巴士回酒店，只省 8–12 美元，却多走一段雨、多等一班车、多坐 20–35 分钟，不推荐。没有任何迪士尼巴士经过奥特莱斯。",
+      tips: "奥特莱斯周日 19:00 关门（美食广场、客服也关），所以在餐厅吃完再从餐厅门口叫车，别在露天等。安全座椅同去程：提前看 Uber Car Seat 能不能约到晚上这一程，约不到就自带座椅或叫两辆。" }
+  ]},
   { no: 1, title: "上午", where: "Disney Springs · 酒店巴士 25 分钟", note: "商店 10:00 开门，9:20 到酒店巴士站。先逛 Marketplace（LEGO 那头），再往 West Side 剧场方向走。", items: [
     { id: "rd-lego", venue: "室内", queue: "有顶", zh: "乐高店", en: "The LEGO Store", stars: 5, tags: [["ok","全家"]],
       desc: "10:00 开门就进，门外巨型乐高雕塑，店里免费拼搭桌。", ride: "30 分钟", wait: "开门时不用排",
@@ -316,9 +330,9 @@ var PARKS = [
     { id: "rd-cirque", venue: "室内", queue: "有顶", zh: "Drawn to Life 太阳马戏团", en: "Drawn to Life presented by Cirque du Soleil & Disney", stars: 5, tags: [["ok","全家"]],
       desc: "13:30 开演，90 分钟，69 美元/人起。13:00 到剧场取票入座。", ride: "90 分钟（无中场）", wait: "提前 30 分钟到",
       about: "太阳马戏团和迪士尼动画合作的秀，讲一个女孩完成爸爸遗留动画的故事，杂技配上现场画出来的米奇、小飞象等角色。",
-      tips: "全室内，雨天不受影响。有一段灯光全暗和鼓声很大，3 岁怕的话坐靠过道方便抱出去。15:00 散场后从 West Side 出口叫车去奥特莱斯。" }
+      tips: "全室内，雨天不受影响。有一段灯光全暗和鼓声很大，3 岁怕的话坐靠过道方便抱出去。15:00 散场后从剧场正后方的 West Side 巴士环叫车去奥特莱斯（见“交通怎么走”）。" }
   ]},
-  { no: 4, title: "下午", where: "Orlando Vineland Premium Outlets · 叫车 5–10 分钟", note: "15:15 出发，15:30 到，周日 19:00 关门，2 小时够。", items: [
+  { no: 4, title: "下午", where: "Orlando Vineland Premium Outlets · 叫车 12 分钟", note: "15:15 出发，15:30 到，周日 19:00 关门（客服、美食广场同时关），2 小时够。迪士尼折扣店先去：它在 1252 号铺，Under Armour 和美食广场之间，正在搬到原 Timberland 的位置，进门前可打 407-477-0222 确认。", items: [
     { id: "rd-warehouse", venue: "室内", queue: "有顶", zh: "迪士尼折扣店", en: "Disney’s Character Warehouse", stars: 4, tags: [["ok","全家"]],
       desc: "园区周边 3–5 折，先来这里买上午在 World of Disney 看中的东西。", ride: "40 分钟", wait: "下午可能排 10 分钟进店",
       about: "迪士尼官方的过季周边仓储店，毛绒、T 恤、马克杯、耳朵，价格是园区的一半以下。",
@@ -328,11 +342,11 @@ var PARKS = [
       about: "160 多家店的露天奥特莱斯，走廊有顶棚，店和店之间要走露天的路。有美食广场，座位紧张。",
       tips: "推车可以在客服中心租。雨大就在一家店里多待会儿。3 岁困了一个大人带着在美食广场坐。" }
   ]},
-  { no: 5, title: "晚上", where: "奥特莱斯附近晚饭 → 叫车回 All-Star 15 分钟", items: [
+  { no: 5, title: "晚上", where: "奥特莱斯附近晚饭 → 叫车回 All-Star 约 20 分钟", items: [
     { id: "rd-dinner", venue: "室内", queue: "室内", zh: "晚饭", en: "Dinner", stars: 0, tags: [["ok","全家"]],
-      desc: "奥特莱斯旁 Palm Pkwy 有餐厅可以走着去；或者叫车回 Disney Springs 吃 Homecomin’、Boathouse 再坐免费巴士回酒店。", ride: "1 小时", wait: "17:30 早饭点不用等",
-      about: "倒时差第一天孩子大概率 7 点就困，建议在奥特莱斯附近吃完直接叫车回酒店，不要再折返 Springs。",
-      tips: "奥特莱斯美食广场也能解决，但座位少。回酒店的 Uber 15 分钟约 15 美元。" },
+      desc: "下雨最省事：奥特莱斯里 The Promenade 的 Ford’s Garage（汉堡，周日到 22:00，有儿童餐），门口就是叫车点。想吃中餐：Palm Pkwy 的 Kungfu Kitchen、季北川，或 China Spring（8123 Vineland Ave，周日 12:00–22:30，407-477-0255，去前打个电话）。隔壁 Vineland Pointe 有 Cheesecake Factory（周日到 23:00）。", ride: "1 小时", wait: "17:30 早饭点不用等",
+      about: "倒时差第一天孩子大概率 7 点就困，建议在奥特莱斯附近吃完直接叫车回酒店，不要再折返 Springs。奥特莱斯美食广场 19:00 关，Chick-fil-A 周日不开。",
+      tips: "在餐厅里叫车，车到了再出门。回酒店的 Uber 约 20 分钟、20–30 美元，雨天更贵。" },
     { id: "rd-monorail", venue: "室外有顶", queue: "有顶", zh: "可选：单轨列车兜一圈", en: "Monorail resort loop", stars: 3, tags: [["ok","全家"]],
       desc: "孩子有电的话，坐巴士到 Magic Kingdom 大门不进园，免费坐单轨去 Polynesian 看看。", ride: "1 小时", wait: "—",
       about: "单轨列车不用门票，绕 Contemporary、Polynesian、Grand Floridian 一圈。这天晚上 10 点左右 Polynesian 沙滩能看到派对烟花。",
