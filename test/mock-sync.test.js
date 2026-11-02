@@ -61,7 +61,8 @@ function assert(cond, msg) { if (!cond) throw new Error('ASSERT: ' + msg); conso
   assert((await A.page.textContent('#meName')) === '爸爸', 'A: identity shown');
   // Opens on today's park (Orlando date), whatever day the test runs
   const ORL = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-  const EXPECT = { '2026-11-01': 'rd', '2026-11-02': 'hs', '2026-11-03': 'ep', '2026-11-04': 'mk', '2026-11-05': 'ak' }[ORL] || 'mk';
+  const DP = JSON.parse(require('fs').readFileSync(FILE.replace('file://', ''), 'utf8').match(/var DAY_PARK = (\{[^}]*\});/)[1]);
+  const EXPECT = DP[ORL] || 'mk';
   assert((await A.page.getAttribute(`#tabs button[data-park=${EXPECT}]`, 'aria-selected')) === 'true', `A: opens on today's park (${EXPECT}, Orlando ${ORL})`);
   await A.page.click('#tabs button[data-park=rd]');
   await A.page.check('input[data-id=rd-lego]');

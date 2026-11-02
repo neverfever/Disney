@@ -262,19 +262,19 @@ var WEATHER = {
     { park: "ep", dow: "周二", date: "11/3", title: "Epcot",
       wx: "上午 10 点前可能阵雨，之后晴间多云、午后局部雷阵雨 28°/21°", rain: "40% 午后", level: "mid",
       why: "预报转好：从 60% 降到 40%，白天雨量几乎为 0，现在比周三还干。早入园直奔 Frozen，上午走 World Nature；下午逛 World Showcase，遇到雷阵雨进各国馆躲一下；傍晚去 Test Track。" },
-    { park: "mk", dow: "周三", date: "11/4", title: "Magic Kingdom",
-      wx: "上午偶有阵雨，下午 1 点后雷阵雨 29°/20°", rain: "50% 午后", level: "mid",
-      why: "比之前湿：上午 23%，下午 1 点后 45–50%（下午约 3 毫米）。早入园先把 Fantasyland 户外项目刷完，中午回酒店午睡避开雷阵雨，傍晚回来接着玩；晚上 7 点后转多云，烟花基本不受影响。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" },
-    { park: "ak", dow: "周四", date: "11/5", title: "Animal Kingdom",
+    { park: "ak", dow: "周三", date: "11/4", title: "Animal Kingdom",
+      wx: "上午基本不下，下午 1 点后雷阵雨 29°/20°", rain: "50% 午后", level: "mid",
+      why: "按天气和 MK 对调过来了：上午只有 23%、几乎没有雨量，正好是动物最活跃、Safari 最好看的时候；下午 1 点后雷阵雨 45–50%，这个园本来就关得早，玩完 Pandora 和 Asia 就回酒店。" },
+    { park: "mk", dow: "周四", date: "11/5", title: "Magic Kingdom",
       wx: "晴 29°/19°", rain: "13% 本周最好", level: "lo",
-      why: "周四是本周最干的一天（13%），全天几乎不下。动物早上最活跃，一开园直奔 Safari；这个园关得早，下午可以从容玩完。" }
+      why: "按天气和 AK 对调过来了：本周最干的一天（13%，全天几乎不下），户外项目最多、最累的园区和烟花放在这天。早入园先刷 Fantasyland，中午回酒店午睡，傍晚回来玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" }
   ],
-  tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。建议：周四（13%）是本周最干的一天，周三反而变湿了（45–50%，下午雷阵雨），差距比早上更大——如果周二晚预报还是这样，按计划把 MK 和 AK 对调（MK 挪到周四烟花更稳，AK 周三一早玩 Safari、下午雷雨前撤），已订的 Lightning Lane 要改日期。游泳放在周四傍晚。"
+  tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。已按预报把 MK 和 AK 对调：周三 Animal Kingdom（上午干、下午雷阵雨前撤），周四 Magic Kingdom（本周最干，烟花更稳）。Lightning Lane 记得改日期。之后每 6 小时还会按预报重新评估，只会调整后天及以后的日子，今天和明天不动。游泳：周三从 AK 回来后看天（打雷泳池会关），不行就周二傍晚。"
 };
 
 var PARKS = [
 { id: "rd", name: "休息日", day: "周日 11/1", intro: "白天阴，下午 3 点半起下雨，今晚雷阵雨最大（70%），安排以室内为主。顺序：上午 Disney Springs → 13:30 太阳马戏团 → 下午奥特莱斯。去 Disney Springs 坐酒店免费巴士，Springs 到奥特莱斯叫车 12 分钟（约 12–20 美元），奥特莱斯回酒店叫车约 20 分钟（约 20–30 美元）。两个孩子按佛州法律都要安全座椅，怎么解决见下面“交通怎么走”。",
-  skip: "游泳别排这天：佛州有闪电时泳池必须关闭，雷雨天开开关关。挪到周二 Epcot 回来后或周四 Animal Kingdom 回来后。Aerophile 热气球雨天和风大不飞。万圣节派对当晚，Magic Kingdom 6 点清场，不进园。",
+  skip: "游泳别排这天：佛州有闪电时泳池必须关闭，雷雨天开开关关。挪到周三 Animal Kingdom 回来后（这个园关得早）或周二 Epcot 回来后。Aerophile 热气球雨天和风大不飞。万圣节派对当晚，Magic Kingdom 6 点清场，不进园。",
   blocks: [
   { no: "车", title: "交通怎么走", where: "今天三段路 · 没有租车", note: "佛州法律：3 岁必须坐五点式安全座椅，5 岁可以用增高垫。出租车和网约车在法律上豁免，但 Uber/Lyft 司机可以拒载没有座椅的孩子，所以要么用 Uber 的 Car Seat 选项，要么自带座椅/增高垫。", items: [
     { id: "rd-go-springs", transit: true, zh: "酒店 → Disney Springs", en: "Disney bus from All-Star Movies", stars: 0, tags: [["ok","免费巴士"]],
@@ -528,7 +528,74 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "mk", name: "Magic Kingdom", day: "周三 11/4", intro: "早入园 30 分钟，逆时针走一圈，中午回城堡休息。上午偶有阵雨（23%），下午 1 点后雷阵雨 45–50%，回酒店午睡正好避开。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。",
+{ id: "ak", name: "Animal Kingdom", day: "周三 11/4", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长；上午几乎不下雨（23%），下午 1 点后雷阵雨 45–50%，所以早入园、中午前把 Safari、Pandora 玩完，下午 1–2 点撤回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
+  skip: "直接跳过：Expedition Everest（5岁 115cm 够但有倒退和雪怪，对5岁偏吓人，不建议）；Kali River Rapids（5岁够但会全身湿透，这天下午有雷雨，别坐）。DinoLand 整片关闭施工。身高：3岁 90cm 在 AK 只能玩无身高项目；5岁 115cm 能坐 Flight of Passage。",
+  blocks: [
+  { no: 1, title: "早入园 / 一开园", where: "Africa · 进门后沿左边一直走到底，约 10 分钟", note: "早入园开放 Pandora 和 Safari，但 Safari 早上动物最多，先去。", items: [
+    { id: "ak-safari", venue: "室外", queue: "有顶", zh: "乞力马扎罗狩猎", en: "Kilimanjaro Safaris", stars: 5, tags: [["ok","孕妇可（路面颠簸，自行判断）"],["h","无身高"]],
+      desc: "坐敞篷卡车看真的长颈鹿、大象、狮子，全园第一名。", ride: "20 分钟", wait: "开园时 15–30 分钟，之后 45–75 分钟",
+      about: "开放式卡车在 110 英亩的草原上开 20 分钟，长颈鹿、斑马、大象、犀牛、狮子都是真的，有时就在车边。",
+      tips: "路是故意做得颠簸的，官方有提示孕妇注意，坐中间排最稳。早上凉快动物活跃，下午大多趴着。一排坐 7 人，靠边视野好。", walk: "出口旁边 ↓" },
+    { id: "ak-gorilla", venue: "室外", queue: "无排队", zh: "大猩猩步道", en: "Gorilla Falls Exploration Trail", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "步行看大猩猩、河马、狐獴，20 分钟。", ride: "20–30 分钟", wait: "无排队",
+      about: "一条树荫小路，经过大猩猩家族、水下看河马的玻璃窗、狐獴和各种鸟。",
+      tips: "早上大猩猩在吃东西最活跃。全程推车可进，是 Safari 之后的自然延续。" }
+  ]},
+  { no: 2, title: "上午", where: "Africa 狮子王剧场 → Pandora（往入口方向走，左手边）", items: [
+    { id: "ak-lionking", venue: "室内", queue: "有顶", zh: "狮子王音乐秀", en: "Festival of the Lion King", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "30 分钟室内大秀，全园最好的表演，有空调。", ride: "30 分钟", wait: "场次制，提前 20–30 分钟",
+      about: "四面舞台的歌舞秀，辛巴、彭彭的巨型花车，杂技、火舞、合唱，演狮子王的全部名曲。",
+      tips: "分 4 个区坐，每区会被分配一个动物叫声互动，孩子很喜欢。剧场有空调，是上午最热时的最佳选择。第一场通常 10 点。", walk: "往入口方向走到 Pandora，约 10 分钟 ↓" },
+    { id: "ak-navi", venue: "室内", queue: "部分露天", zh: "纳美河漂流", en: "Na’vi River Journey", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "阿凡达发光森林里的慢船，无身高，全家一起。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
+      about: "坐船穿过荧光的潘多拉雨林，有发光的植物、动物投影，结尾是一个会唱歌的巨大纳美人萨满机器人。",
+      tips: "全程黑暗但很美不吓人，船很稳。这是 Pandora 唯一全家能坐的项目，一定要 Lightning Lane 或早入园。", walk: "旁边 ↓" },
+    { id: "ak-pandora", venue: "室外", queue: "无排队", zh: "潘多拉逛逛", en: "Pandora – The World of Avatar walk-through", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "悬浮山、会喷水的植物、鼓可以敲。", ride: "20 分钟", wait: "—",
+      about: "整个园区是阿凡达的潘多拉星球，有悬浮山、会动的植物、踩了会响的地面。",
+      tips: "有几处互动植物碰了会喷水或发声，孩子能玩很久。晚上整个园区会发光，但这天下午可能有雷雨，上午看看就行。" },
+    { id: "ak-fop", venue: "室内", queue: "部分露天", zh: "阿凡达飞行", en: "Avatar Flight of Passage", stars: 5, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","112cm"]],
+      desc: "5岁 115cm 刚够。全迪士尼最好的项目之一，爸爸带5岁去，建议买 Single Pass。", ride: "5 分钟", wait: "60–120 分钟；Single Pass 单买（25 美元左右/人）",
+      about: "骑在模拟的斑溪兽上飞越潘多拉的 3D 巨幕，有风、气味和座椅起伏，像骑摩托车一样跨坐。",
+      tips: "跨坐在座椅上，背后有卡扣，115cm 刚过线可能卡扣偏紧，入口先让工作人员量。有俯冲感但没有真的落差，大多数5岁很兴奋。3D 眼镜必须戴。妈妈带3岁在旁边的 Na’vi River 或 Pandora 逛。" }
+  ]},
+  { no: 3, title: "午饭", where: "Pandora · Satu’li Canteen", items: [
+    { id: "ak-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Satu’li Canteen", stars: 0, tags: [["ok","全家"]],
+      desc: "全迪士尼评价最高的快餐，碗饭，室内座位。", ride: "45 分钟", wait: "App 提前点单",
+      about: "自选底料+蛋白质+酱的碗饭，有儿童餐，室内有空调座位。",
+      tips: "11 点前用 App 点单。吃完如果 3 岁已经累了，可以从这里直接出园回酒店，Pandora 离入口只有 5 分钟。" }
+  ]},
+  { no: 4, title: "下午（雷雨前）", where: "Asia · 从 Pandora 穿过 Discovery Island 往右走，约 10 分钟", items: [
+    { id: "ak-birds", venue: "室外有顶", queue: "有顶", zh: "鸟类飞行秀", en: "Feathered Friends in Flight!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "老鹰、鹦鹉从头顶飞过的露天秀，25 分钟。", ride: "25 分钟", wait: "场次制，提前 15 分钟",
+      about: "训练师带着几十种鸟在观众头顶飞来飞去，有金刚鹦鹉、猫头鹰、秃鹫。",
+      tips: "有顶棚的露天剧场，雨中可能取消。坐靠过道，鸟会从头顶擦过去，孩子很兴奋。", walk: "隔壁 ↓" },
+    { id: "ak-jungle", venue: "室外", queue: "无排队", zh: "老虎步道", en: "Maharajah Jungle Trek", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "步行看老虎、科摩多龙、蝙蝠。", ride: "20–30 分钟", wait: "无排队",
+      about: "亚洲古庙风格的小路，有老虎、科摩多巨蜥、巨型果蝠（可以开放接触的蝙蝠房）、鸟园。",
+      tips: "蝙蝠房有绕行通道，怕的话可以不进。老虎下午通常在水边趴着，远一点但能看到。" },
+    { id: "ak-zootopia", venue: "室内", queue: "有顶", zh: "疯狂动物城 3D 秀", en: "Zootopia: Better Zoogether!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "生命之树里面的 3D 电影，有座椅特效，空调。", ride: "15 分钟", wait: "10–25 分钟",
+      about: "2025 年底新开的 3D 秀，朱迪和尼克主持动物城庆典，有水雾、风、座椅震动效果。",
+      tips: "座椅特效比 PhilharMagic 多，3岁怕的话坐最后一排（特效弱）。剧场在生命之树树根下，入口在 Discovery Island。" }
+  ]},
+  { no: 5, title: "收尾 / 备选", where: "Discovery Island 和 Africa 小火车", items: [
+    { id: "ak-explorers", venue: "室外", queue: "无排队", zh: "荒野探险家集章", en: "Wilderness Explorers", stars: 4, tags: [["ok","孕妇可"]],
+      desc: "入口领册子，全园 30 多个站点集章，5岁一整天的任务。", ride: "全天穿插", wait: "无",
+      about: "飞屋环游记主题的集章活动，每个站点工作人员会教一个小知识然后盖章。",
+      tips: "入口桥上领册子，免费。不用全集齐，每到一个园区集 2–3 个就够孩子开心。" },
+    { id: "ak-rafiki", venue: "室外有顶", queue: "有顶", zh: "动物农场小火车", en: "Rafiki’s Planet Watch & Affection Section", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "Africa 坐小火车去摸山羊、看兽医，备选。", ride: "小火车 7 分钟 + 农场 30 分钟", wait: "小火车 10–15 分钟",
+      about: "从 Africa 坐小火车到后区，有可以摸的山羊绵羊、兽医手术观察窗和画动物的教室。",
+      tips: "时间够就去，3岁会很喜欢摸动物。有洗手池。下午 2 点以后雷雨来之前要往回坐火车。" },
+    { id: "ak-nemo", venue: "室内", queue: "有顶", zh: "海底总动员舞台剧", en: "Finding Nemo: The Big Blue… and Beyond!", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
+      desc: "DinoLand 剧场的室内木偶音乐剧，确认开放再去。", ride: "25 分钟", wait: "场次制",
+      about: "巨型木偶+真人演唱的海底总动员音乐剧，室内有空调。",
+      tips: "DinoLand 大部分区域施工关闭，这个剧场是否开放当天看 App。雷雨来了的话这里是最近的室内避雨处之一。" }
+  ]}
+]},
+
+{ id: "mk", name: "Magic Kingdom", day: "周四 11/5", intro: "早入园 30 分钟，逆时针走一圈，中午回城堡休息。本周最干的一天（13%），全天几乎不下雨，可以一直玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。",
   skip: "直接跳过：Tiana’s Bayou（11/2–12/18 关闭）、TRON 122cm（5岁 115 不够）、旋转茶杯和 Astro Orbiter（孕妇不宜、容易晕）。Carousel of Progress 和河区（Tom Sawyer Island、蒸汽船）施工中关闭。身高：3岁 90cm 只能坐 Barnstormer 89cm 和赛车同乘；5岁 115cm 能坐除 TRON 外的所有项目。",
   blocks: [
   { no: 1, title: "早入园", where: "开园前30分钟 · Fantasyland 城堡正后方", note: "只开 Fantasyland 和 Tomorrowland，直奔城堡后面。", items: [
@@ -643,73 +710,6 @@ var PARKS = [
       about: "米奇在后台化妆间等你，可以合影、拥抱、签名，是全园最稳定能见到米奇的地方。",
       tips: "早入园和下午巡游时排队最短。可以用 Lightning Lane Multi Pass 订。" }
   ]}
-]},
-
-{ id: "ak", name: "Animal Kingdom", day: "周四 11/5", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长；预报全天几乎不下雨（13%，本周最干），可以从容玩到下午再回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
-  skip: "直接跳过：Expedition Everest（5岁 115cm 够但有倒退和雪怪，对5岁偏吓人，不建议）；Kali River Rapids（5岁够但会全身湿透，这天下午有雷雨，别坐）。DinoLand 整片关闭施工。身高：3岁 90cm 在 AK 只能玩无身高项目；5岁 115cm 能坐 Flight of Passage。",
-  blocks: [
-  { no: 1, title: "早入园 / 一开园", where: "Africa · 进门后沿左边一直走到底，约 10 分钟", note: "早入园开放 Pandora 和 Safari，但 Safari 早上动物最多，先去。", items: [
-    { id: "ak-safari", venue: "室外", queue: "有顶", zh: "乞力马扎罗狩猎", en: "Kilimanjaro Safaris", stars: 5, tags: [["ok","孕妇可（路面颠簸，自行判断）"],["h","无身高"]],
-      desc: "坐敞篷卡车看真的长颈鹿、大象、狮子，全园第一名。", ride: "20 分钟", wait: "开园时 15–30 分钟，之后 45–75 分钟",
-      about: "开放式卡车在 110 英亩的草原上开 20 分钟，长颈鹿、斑马、大象、犀牛、狮子都是真的，有时就在车边。",
-      tips: "路是故意做得颠簸的，官方有提示孕妇注意，坐中间排最稳。早上凉快动物活跃，下午大多趴着。一排坐 7 人，靠边视野好。", walk: "出口旁边 ↓" },
-    { id: "ak-gorilla", venue: "室外", queue: "无排队", zh: "大猩猩步道", en: "Gorilla Falls Exploration Trail", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "步行看大猩猩、河马、狐獴，20 分钟。", ride: "20–30 分钟", wait: "无排队",
-      about: "一条树荫小路，经过大猩猩家族、水下看河马的玻璃窗、狐獴和各种鸟。",
-      tips: "早上大猩猩在吃东西最活跃。全程推车可进，是 Safari 之后的自然延续。" }
-  ]},
-  { no: 2, title: "上午", where: "Africa 狮子王剧场 → Pandora（往入口方向走，左手边）", items: [
-    { id: "ak-lionking", venue: "室内", queue: "有顶", zh: "狮子王音乐秀", en: "Festival of the Lion King", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "30 分钟室内大秀，全园最好的表演，有空调。", ride: "30 分钟", wait: "场次制，提前 20–30 分钟",
-      about: "四面舞台的歌舞秀，辛巴、彭彭的巨型花车，杂技、火舞、合唱，演狮子王的全部名曲。",
-      tips: "分 4 个区坐，每区会被分配一个动物叫声互动，孩子很喜欢。剧场有空调，是上午最热时的最佳选择。第一场通常 10 点。", walk: "往入口方向走到 Pandora，约 10 分钟 ↓" },
-    { id: "ak-navi", venue: "室内", queue: "部分露天", zh: "纳美河漂流", en: "Na’vi River Journey", stars: 5, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "阿凡达发光森林里的慢船，无身高，全家一起。", ride: "5 分钟", wait: "45–75 分钟；建议 Lightning Lane",
-      about: "坐船穿过荧光的潘多拉雨林，有发光的植物、动物投影，结尾是一个会唱歌的巨大纳美人萨满机器人。",
-      tips: "全程黑暗但很美不吓人，船很稳。这是 Pandora 唯一全家能坐的项目，一定要 Lightning Lane 或早入园。", walk: "旁边 ↓" },
-    { id: "ak-pandora", venue: "室外", queue: "无排队", zh: "潘多拉逛逛", en: "Pandora – The World of Avatar walk-through", stars: 4, tags: [["ok","孕妇可"]],
-      desc: "悬浮山、会喷水的植物、鼓可以敲。", ride: "20 分钟", wait: "—",
-      about: "整个园区是阿凡达的潘多拉星球，有悬浮山、会动的植物、踩了会响的地面。",
-      tips: "有几处互动植物碰了会喷水或发声，孩子能玩很久。晚上整个园区会发光，但这天下午可能有雷雨，上午看看就行。" },
-    { id: "ak-fop", venue: "室内", queue: "部分露天", zh: "阿凡达飞行", en: "Avatar Flight of Passage", stars: 5, tags: [["no","孕妇不可"],["dad","爸爸带5岁"],["h","112cm"]],
-      desc: "5岁 115cm 刚够。全迪士尼最好的项目之一，爸爸带5岁去，建议买 Single Pass。", ride: "5 分钟", wait: "60–120 分钟；Single Pass 单买（25 美元左右/人）",
-      about: "骑在模拟的斑溪兽上飞越潘多拉的 3D 巨幕，有风、气味和座椅起伏，像骑摩托车一样跨坐。",
-      tips: "跨坐在座椅上，背后有卡扣，115cm 刚过线可能卡扣偏紧，入口先让工作人员量。有俯冲感但没有真的落差，大多数5岁很兴奋。3D 眼镜必须戴。妈妈带3岁在旁边的 Na’vi River 或 Pandora 逛。" }
-  ]},
-  { no: 3, title: "午饭", where: "Pandora · Satu’li Canteen", items: [
-    { id: "ak-lunch", venue: "室内", queue: "室内", zh: "午饭", en: "Satu’li Canteen", stars: 0, tags: [["ok","全家"]],
-      desc: "全迪士尼评价最高的快餐，碗饭，室内座位。", ride: "45 分钟", wait: "App 提前点单",
-      about: "自选底料+蛋白质+酱的碗饭，有儿童餐，室内有空调座位。",
-      tips: "11 点前用 App 点单。吃完如果 3 岁已经累了，可以从这里直接出园回酒店，Pandora 离入口只有 5 分钟。" }
-  ]},
-  { no: 4, title: "下午（雷雨前）", where: "Asia · 从 Pandora 穿过 Discovery Island 往右走，约 10 分钟", items: [
-    { id: "ak-birds", venue: "室外有顶", queue: "有顶", zh: "鸟类飞行秀", en: "Feathered Friends in Flight!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "老鹰、鹦鹉从头顶飞过的露天秀，25 分钟。", ride: "25 分钟", wait: "场次制，提前 15 分钟",
-      about: "训练师带着几十种鸟在观众头顶飞来飞去，有金刚鹦鹉、猫头鹰、秃鹫。",
-      tips: "有顶棚的露天剧场，雨中可能取消。坐靠过道，鸟会从头顶擦过去，孩子很兴奋。", walk: "隔壁 ↓" },
-    { id: "ak-jungle", venue: "室外", queue: "无排队", zh: "老虎步道", en: "Maharajah Jungle Trek", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "步行看老虎、科摩多龙、蝙蝠。", ride: "20–30 分钟", wait: "无排队",
-      about: "亚洲古庙风格的小路，有老虎、科摩多巨蜥、巨型果蝠（可以开放接触的蝙蝠房）、鸟园。",
-      tips: "蝙蝠房有绕行通道，怕的话可以不进。老虎下午通常在水边趴着，远一点但能看到。" },
-    { id: "ak-zootopia", venue: "室内", queue: "有顶", zh: "疯狂动物城 3D 秀", en: "Zootopia: Better Zoogether!", stars: 4, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "生命之树里面的 3D 电影，有座椅特效，空调。", ride: "15 分钟", wait: "10–25 分钟",
-      about: "2025 年底新开的 3D 秀，朱迪和尼克主持动物城庆典，有水雾、风、座椅震动效果。",
-      tips: "座椅特效比 PhilharMagic 多，3岁怕的话坐最后一排（特效弱）。剧场在生命之树树根下，入口在 Discovery Island。" }
-  ]},
-  { no: 5, title: "收尾 / 备选", where: "Discovery Island 和 Africa 小火车", items: [
-    { id: "ak-explorers", venue: "室外", queue: "无排队", zh: "荒野探险家集章", en: "Wilderness Explorers", stars: 4, tags: [["ok","孕妇可"]],
-      desc: "入口领册子，全园 30 多个站点集章，5岁一整天的任务。", ride: "全天穿插", wait: "无",
-      about: "飞屋环游记主题的集章活动，每个站点工作人员会教一个小知识然后盖章。",
-      tips: "入口桥上领册子，免费。不用全集齐，每到一个园区集 2–3 个就够孩子开心。" },
-    { id: "ak-rafiki", venue: "室外有顶", queue: "有顶", zh: "动物农场小火车", en: "Rafiki’s Planet Watch & Affection Section", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "Africa 坐小火车去摸山羊、看兽医，备选。", ride: "小火车 7 分钟 + 农场 30 分钟", wait: "小火车 10–15 分钟",
-      about: "从 Africa 坐小火车到后区，有可以摸的山羊绵羊、兽医手术观察窗和画动物的教室。",
-      tips: "时间够就去，3岁会很喜欢摸动物。有洗手池。下午 2 点以后雷雨来之前要往回坐火车。" },
-    { id: "ak-nemo", venue: "室内", queue: "有顶", zh: "海底总动员舞台剧", en: "Finding Nemo: The Big Blue… and Beyond!", stars: 3, tags: [["ok","孕妇可"],["h","无身高"]],
-      desc: "DinoLand 剧场的室内木偶音乐剧，确认开放再去。", ride: "25 分钟", wait: "场次制",
-      about: "巨型木偶+真人演唱的海底总动员音乐剧，室内有空调。",
-      tips: "DinoLand 大部分区域施工关闭，这个剧场是否开放当天看 App。雷雨来了的话这里是最近的室内避雨处之一。" }
-  ]}
 ]}
 ];
 
@@ -722,7 +722,7 @@ var SYNC = {
   pollMs: 5000
 };
 var PEOPLE = ["爸爸", "妈妈"];
-var DAY_PARK = { "2026-11-01": "rd", "2026-11-02": "hs", "2026-11-03": "ep", "2026-11-04": "mk", "2026-11-05": "ak" };
+var DAY_PARK = { "2026-11-01": "rd", "2026-11-02": "hs", "2026-11-03": "ep", "2026-11-04": "ak", "2026-11-05": "mk" };
 
 function starStr(n) {
   if (!n) return "";
