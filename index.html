@@ -249,16 +249,16 @@
 <script>
 // ---- 天气与园区分配（每 6 小时由定时任务按 NWS 预报更新；level: hi ≥60%、mid 35–59%、lo <35%） ----
 var WEATHER = {
-  updated: "11/2 06:29（美东）",
-  checked: "11/2 06:40（美东）",
+  updated: "11/2 12:39（美东）",
+  checked: "11/2 12:59（美东）",
   source: "美国国家气象局 NWS，Lake Buena Vista 网格",
   days: [
     { park: "rd", dow: "周日", date: "11/1", title: "休息日 · 奥特莱斯 + Disney Springs",
       wx: "白天阴，下午 3 点半起下雨，今晚雷阵雨最大 27°/21°", rain: "70% 今晚", level: "hi",
       why: "雨最大的一天，今晚到明早是全周雨量最集中的时段（今晚 2–2.5 厘米）。在餐厅里叫车，车到了再出门。也是万圣节派对最后一场，MK 下午 6 点清场。阵风 40 km/h，热气球不飞。" },
     { park: "hs", dow: "周一", date: "11/2", title: "Hollywood Studios",
-      wx: "上午到下午 2 点阵雨雷阵雨，之后转干；洪水预警到晚 7 点 27°/21°", rain: "70% 上午", level: "hi",
-      why: "雨集中在上午到下午 2 点（约 7 毫米，可能打雷），2 点后降到 28%，傍晚 24%。洪水预警（Orange、Osceola 县）到今晚 7 点，凌晨下了大雨，巴士站、排队区低洼处会积水，孩子穿凉鞋或防水鞋。早入园先去 Toy Story Land：没打雷 Slinky、飞碟照开、排队最短；一打雷就停，转 Toy Story Mania 和室内项目（铁路、Disney Junior、Frozen），下午 2 点后再回 Toy Story Land 补。" },
+      wx: "全天下雨，下午雷阵雨，傍晚减弱；洪水预警到晚 7 点 27°/21°", rain: "80% 下午", level: "hi",
+      why: "预报又改：下午不会转干了，12–5 点雷阵雨 80%（约 3–7 毫米），傍晚 5 点后降到 40% 左右。下午留在室内：Runaway Railway、Disney Junior、Frozen 合唱、小美人鱼、Toy Story Mania、Star Tours。Slinky、飞碟打雷就停，上午没玩到的话傍晚 5 点后雨小了再去。洪水预警（Orange、Osceola 县）到今晚 7 点，低洼处积水，孩子穿凉鞋或防水鞋。" },
     { park: "ep", dow: "周二", date: "11/3", title: "Epcot",
       wx: "上午 10 点到下午 4 点阵雨雷阵雨，傍晚转晴 29°/21°", rain: "50% 白天", level: "mid",
       why: "比昨晚的预报湿：10 点到下午 4 点阵雨雷阵雨（约 7 毫米），傍晚降到 17%。早入园直奔 Frozen，白天多走室内（Nemo、Soarin’、The Land、Figment、Spaceship Earth）；4 点雨停后再逛 World Showcase、去 Test Track，傍晚的 World Showcase 也更凉快。" },
@@ -368,7 +368,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "洪水预警（Flood Watch）到今晚 7 点，凌晨下了大雨，低洼处会积水。上午到下午 2 点阵雨雷阵雨（70%），2 点后转干（28%），傍晚 24%。早入园先去 Toy Story Land：没打雷时 Slinky、飞碟照开，下雨排队最短；一打雷就停，转 Toy Story Mania 和下面的室内项目，下午 2 点后再回 Toy Story Land 补。园区不大，走路少。",
+{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "洪水预警（Flood Watch）到今晚 7 点，低洼处会积水。上午一直在下，下午 12–5 点雷阵雨 80%，傍晚 5 点后降到 40% 左右。下午就按下面的室内项目走；Toy Story Land 的 Slinky、飞碟打雷就停，等傍晚雨小了再去补。园区不大，走路少。",
   skip: "直接跳过：Tower of Terror（5岁 115cm 够但自由落体太吓人）、Rock ’n’ Roller Coaster 122cm（不够）。Muppet*Vision 已关闭，Monsters Inc 新园区施工中。身高：3岁 90cm 能坐外星人飞碟 81cm；5岁 115cm 能坐 Slinky、Smugglers、Rise、Star Tours。",
   blocks: [
   { no: 1, title: "上午（雨中）", where: "Hollywood Blvd 入口 → Animation Courtyard", note: "这两块离入口最近，全是室内。", items: [
