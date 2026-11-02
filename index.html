@@ -249,8 +249,8 @@
 <script>
 // ---- 天气与园区分配（每 6 小时由定时任务按 NWS 预报更新；level: hi ≥60%、mid 35–59%、lo <35%） ----
 var WEATHER = {
-  updated: "11/2 12:39（美东）",
-  checked: "11/2 12:59（美东）",
+  updated: "11/2 18:29（美东）",
+  checked: "11/2 18:39（美东）",
   source: "美国国家气象局 NWS，Lake Buena Vista 网格",
   days: [
     { park: "rd", dow: "周日", date: "11/1", title: "休息日 · 奥特莱斯 + Disney Springs",
@@ -260,14 +260,14 @@ var WEATHER = {
       wx: "全天下雨，下午雷阵雨，傍晚减弱；洪水预警到晚 7 点 27°/21°", rain: "80% 下午", level: "hi",
       why: "预报又改：下午不会转干了，12–5 点雷阵雨 80%（约 3–7 毫米），傍晚 5 点后降到 40% 左右。下午留在室内：Runaway Railway、Disney Junior、Frozen 合唱、小美人鱼、Toy Story Mania、Star Tours。Slinky、飞碟打雷就停，上午没玩到的话傍晚 5 点后雨小了再去。洪水预警（Orange、Osceola 县）到今晚 7 点，低洼处积水，孩子穿凉鞋或防水鞋。" },
     { park: "ep", dow: "周二", date: "11/3", title: "Epcot",
-      wx: "上午 10 点到下午 4 点阵雨雷阵雨，傍晚转晴 29°/21°", rain: "50% 白天", level: "mid",
-      why: "比昨晚的预报湿：10 点到下午 4 点阵雨雷阵雨（约 7 毫米），傍晚降到 17%。早入园直奔 Frozen，白天多走室内（Nemo、Soarin’、The Land、Figment、Spaceship Earth）；4 点雨停后再逛 World Showcase、去 Test Track，傍晚的 World Showcase 也更凉快。" },
+      wx: "上午 7–10 点可能阵雨，11 点到下午 5 点雷阵雨，傍晚转晴 29°/21°", rain: "47% 白天", level: "mid",
+      why: "雨量比早上的预报小（白天约 2–3 毫米），但时间拉长：7–10 点可能阵雨，11 点到下午 5 点雷阵雨（45%），傍晚 5 点后降到 22%。早入园直奔 Frozen，白天以室内为主（Nemo、Soarin’、The Land、Figment、Spaceship Earth）；5 点后雨停再逛 World Showcase、去 Test Track，傍晚也更凉快。" },
     { park: "ak", dow: "周三", date: "11/4", title: "Animal Kingdom",
-      wx: "上午基本不下，下午 1 点后雷阵雨 29°/20°", rain: "50% 午后", level: "mid",
-      why: "按天气和 MK 对调过来了：上午只有 23%、几乎没有雨量，正好是动物最活跃、Safari 最好看的时候；下午 1 点后雷阵雨 45–50%，这个园本来就关得早，玩完 Pandora 和 Asia 就回酒店。" },
+      wx: "上午晴，下午 1 点后可能雷阵雨 29°/20°", rain: "40% 午后", level: "mid",
+      why: "按天气和 MK 对调过来了：上午只有 3%，基本不会下，正好是动物最活跃、Safari 最好看的时候；下午 1 点后雷阵雨 40% 左右（约 1 毫米），这个园本来就关得早，玩完 Pandora 和 Asia 就回酒店。" },
     { park: "mk", dow: "周四", date: "11/5", title: "Magic Kingdom",
-      wx: "晴 29°/20°", rain: "9% 本周最好", level: "lo",
-      why: "按天气和 AK 对调过来了：本周最干的一天（9%，全天晴），户外项目最多、最累的园区和烟花放在这天。早入园先刷 Fantasyland，中午回酒店午睡，傍晚回来玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" }
+      wx: "晴 30°/20°", rain: "14% 本周最好", level: "lo",
+      why: "按天气和 AK 对调过来了：本周最干的一天（14%，全天以晴为主），户外项目最多、最累的园区和烟花放在这天。早入园先刷 Fantasyland，中午回酒店午睡，傍晚回来玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" }
   ],
   tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服；周一有洪水预警，孩子穿凉鞋或防水鞋。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。已按预报把 MK 和 AK 对调：周三 Animal Kingdom（上午干、下午雷阵雨前撤），周四 Magic Kingdom（本周最干，烟花更稳）。Lightning Lane 记得改日期。之后每 6 小时还会按预报重新评估，只会调整后天及以后的日子，今天和明天不动。游泳：周三从 AK 回来后看天（打雷泳池会关），不行就周二傍晚。"
 };
@@ -445,7 +445,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "ep", name: "Epcot", day: "周二 11/3", intro: "Epcot 最大，一圈 3 公里以上，推车一定要带。预报转湿：上午 10 点到下午 4 点阵雨雷阵雨（51%），傍晚转干（17%）。早入园直奔 Frozen，白天多走室内馆；下午 4 点雨停后再绕 World Showcase、去 Test Track，雨来了就进各国馆躲。11 月可能还在 Food & Wine 美食节，各国摊位有小份菜。",
+{ id: "ep", name: "Epcot", day: "周二 11/3", intro: "Epcot 最大，一圈 3 公里以上，推车一定要带。上午 7–10 点可能阵雨，11 点到下午 5 点雷阵雨（45%），雨量不大，傍晚转干（22%）。早入园直奔 Frozen，白天多走室内馆；下午 5 点后再绕 World Showcase、去 Test Track，雨来了就进各国馆躲。11 月可能还在 Food & Wine 美食节，各国摊位有小份菜。",
   skip: "直接跳过：Mission: SPACE（5岁够但是旋转模拟器容易晕）、Guardians of the Galaxy 107cm（5岁够但倒退发射太刺激）。爸爸想玩 Guardians 可以在午睡时间买 Single Pass。身高：3岁 90cm 在 Epcot 没有身高限制的项目都能玩；5岁 115cm 能坐 Soarin’ 和 Test Track。",
   blocks: [
   { no: 1, title: "早入园", where: "World Showcase · Norway 和 Mexico（湖的左侧）", note: "早入园开放 Frozen 和 Remy，直奔 Frozen。", items: [
@@ -528,7 +528,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "ak", name: "Animal Kingdom", day: "周三 11/4", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长；上午几乎不下雨（23%），下午 1 点后雷阵雨 45–50%，所以早入园、中午前把 Safari、Pandora 玩完，下午 1–2 点撤回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
+{ id: "ak", name: "Animal Kingdom", day: "周三 11/4", intro: "一开园就去 Safari，动物早上最活跃。这个园全是户外、树荫多但路长；上午基本不下雨（3%），下午 1 点后雷阵雨 40% 左右，所以早入园、中午前把 Safari、Pandora 玩完，下午 1–2 点撤回酒店。入口拿一本 Wilderness Explorers 小册子，5岁在园里集章能玩一整天。",
   skip: "直接跳过：Expedition Everest（5岁 115cm 够但有倒退和雪怪，对5岁偏吓人，不建议）；Kali River Rapids（5岁够但会全身湿透，这天下午有雷雨，别坐）。DinoLand 整片关闭施工。身高：3岁 90cm 在 AK 只能玩无身高项目；5岁 115cm 能坐 Flight of Passage。",
   blocks: [
   { no: 1, title: "早入园 / 一开园", where: "Africa · 进门后沿左边一直走到底，约 10 分钟", note: "早入园开放 Pandora 和 Safari，但 Safari 早上动物最多，先去。", items: [
@@ -595,7 +595,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "mk", name: "Magic Kingdom", day: "周四 11/5", intro: "早入园 30 分钟，逆时针走一圈，中午回城堡休息。本周最干的一天（9%），全天晴，可以一直玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。",
+{ id: "mk", name: "Magic Kingdom", day: "周四 11/5", intro: "早入园 30 分钟，逆时针走一圈，中午回城堡休息。本周最干的一天（14%），全天以晴为主，可以一直玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。",
   skip: "直接跳过：Tiana’s Bayou（11/2–12/18 关闭）、TRON 122cm（5岁 115 不够）、旋转茶杯和 Astro Orbiter（孕妇不宜、容易晕）。Carousel of Progress 和河区（Tom Sawyer Island、蒸汽船）施工中关闭。身高：3岁 90cm 只能坐 Barnstormer 89cm 和赛车同乘；5岁 115cm 能坐除 TRON 外的所有项目。",
   blocks: [
   { no: 1, title: "早入园", where: "开园前30分钟 · Fantasyland 城堡正后方", note: "只开 Fantasyland 和 Tomorrowland，直奔城堡后面。", items: [
