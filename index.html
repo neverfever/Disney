@@ -249,16 +249,16 @@
 <script>
 // ---- 天气与园区分配（每 6 小时由定时任务按 NWS 预报更新；level: hi ≥60%、mid 35–59%、lo <35%） ----
 var WEATHER = {
-  updated: "11/1 17:14（美东）",
-  checked: "11/1 18:40（美东）",
+  updated: "11/1 23:55（美东）",
+  checked: "11/2 00:39（美东）",
   source: "美国国家气象局 NWS，Lake Buena Vista 网格",
   days: [
     { park: "rd", dow: "周日", date: "11/1", title: "休息日 · 奥特莱斯 + Disney Springs",
       wx: "白天阴，下午 3 点半起下雨，今晚雷阵雨最大 27°/21°", rain: "70% 今晚", level: "hi",
       why: "雨最大的一天，今晚到明早是全周雨量最集中的时段（今晚 2–2.5 厘米）。在餐厅里叫车，车到了再出门。也是万圣节派对最后一场，MK 下午 6 点清场。阵风 40 km/h，热气球不飞。" },
     { park: "hs", dow: "周一", date: "11/2", title: "Hollywood Studios",
-      wx: "多云，白天零星阵雨，傍晚后基本停 27°/21°", rain: "50% 白天零星", level: "mid",
-      why: "预报转好：大雨在周一凌晨下完，白天 43–48% 零星阵雨（白天合计只有约 3 毫米），傍晚 5 点后降到 24%。前一晚雨大，地面会有积水。露天的 Slinky、飞碟抓雨歇去，雨来了转室内（铁路、Disney Junior、Frozen）。" },
+      wx: "多云，白天零星阵雨雷阵雨，傍晚后基本停；洪水预警到晚 7 点 27°/21°", rain: "50% 白天零星", level: "mid",
+      why: "气象局发布了洪水预警（Flood Watch，奥兰多所在的 Orange、Osceola 县，到今晚 7 点）：大雨主要在凌晨，地面已经泡透，巴士站、停车场、排队区低洼处会积水。白天 43–48% 零星阵雨，量不大（6–12 毫米），傍晚 5 点后降到 24%。孩子穿凉鞋或防水鞋、多带袜子。露天的 Slinky、飞碟抓雨歇去，雨来了转室内（铁路、Disney Junior、Frozen）。" },
     { park: "ep", dow: "周二", date: "11/3", title: "Epcot",
       wx: "上午 10 点前可能阵雨，之后晴间多云、午后局部雷阵雨 28°/21°", rain: "40% 午后", level: "mid",
       why: "预报转好：从 60% 降到 40%，白天雨量几乎为 0，现在比周三还干。早入园直奔 Frozen，上午走 World Nature；下午逛 World Showcase，遇到雷阵雨进各国馆躲一下；傍晚去 Test Track。" },
@@ -269,7 +269,7 @@ var WEATHER = {
       wx: "晴 29°/19°", rain: "13% 本周最好", level: "lo",
       why: "按天气和 AK 对调过来了：本周最干的一天（13%，全天几乎不下），户外项目最多、最累的园区和烟花放在这天。早入园先刷 Fantasyland，中午回酒店午睡，傍晚回来玩到烟花。圣诞派对 11/8 才开始，这天正常闭园，能看完整烟花。" }
   ],
-  tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。已按预报把 MK 和 AK 对调：周三 Animal Kingdom（上午干、下午雷阵雨前撤），周四 Magic Kingdom（本周最干，烟花更稳）。Lightning Lane 记得改日期。之后每 6 小时还会按预报重新评估，只会调整后天及以后的日子，今天和明天不动。游泳：周三从 AK 回来后看天（打雷泳池会关），不行就周二傍晚。"
+  tip: "雨天准备：每人一件雨披（园区买 10 美元）、推车罩、孩子一套换洗衣服；周一有洪水预警，孩子穿凉鞋或防水鞋。佛州阵雨一般 30–60 分钟就停，雨中排队反而短。已按预报把 MK 和 AK 对调：周三 Animal Kingdom（上午干、下午雷阵雨前撤），周四 Magic Kingdom（本周最干，烟花更稳）。Lightning Lane 记得改日期。之后每 6 小时还会按预报重新评估，只会调整后天及以后的日子，今天和明天不动。游泳：周三从 AK 回来后看天（打雷泳池会关），不行就周二傍晚。"
 };
 
 var PARKS = [
@@ -368,7 +368,7 @@ var PARKS = [
   ]}
 ]},
 
-{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "大雨在凌晨下完，白天上午、下午都是 45% 左右的零星阵雨（量不大），傍晚 5 点后降到 24%。早上没下的话早入园先去 Toy Story Land 把露天项目（Slinky、飞碟）玩掉，雨来了再按下面的室内项目走；早上在下就反过来，先室内、雨歇再去。地面会有积水。园区不大，走路少。",
+{ id: "hs", name: "Hollywood Studios", day: "周一 11/2", intro: "洪水预警（Flood Watch）到今晚 7 点：大雨在凌晨，地面泡透了，低洼处会积水。白天上午、下午都是 45% 左右的零星阵雨（量不大），傍晚 5 点后降到 24%。早上没下的话早入园先去 Toy Story Land 把露天项目（Slinky、飞碟）玩掉，雨来了再按下面的室内项目走；早上在下就反过来，先室内、雨歇再去。地面会有积水。园区不大，走路少。",
   skip: "直接跳过：Tower of Terror（5岁 115cm 够但自由落体太吓人）、Rock ’n’ Roller Coaster 122cm（不够）。Muppet*Vision 已关闭，Monsters Inc 新园区施工中。身高：3岁 90cm 能坐外星人飞碟 81cm；5岁 115cm 能坐 Slinky、Smugglers、Rise、Star Tours。",
   blocks: [
   { no: 1, title: "上午（雨中）", where: "Hollywood Blvd 入口 → Animation Courtyard", note: "这两块离入口最近，全是室内。", items: [
